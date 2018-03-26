@@ -2,7 +2,6 @@
 #importing packages
 import glob,os
 import pandas as pd
-from pandas import ExcelWriter
 import re
 import csv
 #setting working directory
@@ -62,33 +61,30 @@ Norm_Counts_df["RPM"] = (Norm_Counts_df["Gene_Count"]/Norm_Counts_df["Combined_P
 #Normaling by RecA count
 Norm_Counts_df["RecA_Norm"] = Norm_Counts_df["Gene_Count"]/Norm_Counts_df["RecA_Count"]
 #Shortening description to gene name
-Norm_Counts_df['Gene_Name'] = pd.np.where(Norm_Counts_df.description_of_target.str.contains("NifH", re.IGNORECASE), "NifH",
-                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("NifL", re.IGNORECASE), "NifL",
-                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("NifD", re.IGNORECASE), "NifD",
-                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("NifX", re.IGNORECASE), "NifX",
-                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("NifM", re.IGNORECASE), "NifM",
-                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("NifB", re.IGNORECASE), "NifB",
-                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("NifE", re.IGNORECASE), "NifE",
-                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("NifV", re.IGNORECASE), "NifV",
-                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("NifK", re.IGNORECASE), "NifK",
-                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("NifU", re.IGNORECASE), "NifU",
-                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("RecA", re.IGNORECASE), "RecA",
-                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("NifN", re.IGNORECASE), "NifN",
-                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("NifN", re.IGNORECASE), "NifN",
-                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("VnfD", re.IGNORECASE), "VnfD",
-                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("VnfG", re.IGNORECASE), "VnfG",
-                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("AnfK", re.IGNORECASE), "AnfK",
-                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("AnfD", re.IGNORECASE), "AnfD",
-                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("AnfG", re.IGNORECASE), "AnfG",
-                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("fdxN", re.IGNORECASE), "fdxN",
-                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("alt_nitrog_alph", re.IGNORECASE), "nitrogenase alpha chain",
-                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("dinitro_DRAG", re.IGNORECASE), "dinitrogen reductase",
-                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("TIGR02935", re.IGNORECASE), "probable nitrogen fixation protein",
-                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("dinitro_DRAG", re.IGNORECASE), "dinitrogen reductase",
-                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("N2-ase-Ialpha", re.IGNORECASE), "nitrogenase component I, alpha chain", "No_name"))))))))))))))))))))))))
-print(Norm_Counts_df)
-print(Norm_Counts_df["Gene_Name"])
-#write DataFrame to an excel sheet
-#writer = ExcelWriter('PythonExport.xlsx')
-#Norm_Counts_df.to_csv('GeneCountOutput.csv', sep=',')
-#Norm_Counts_df.to_excel(ExcelWriter('GeneCountOutput.xlsx')) #writing excel sheet with file name and TIGRFAM counts
+Norm_Counts_df['Gene_Name'] = pd.np.where(Norm_Counts_df.description_of_target.str.contains("NifH", case=False), "nifH",
+                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("NifL", case=False), "nifL",
+                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("NifA", case=False), "nifA",
+                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("NifD", case=False), "nifD",
+                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("NifX", case=False), "nifX",
+                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("NifM", case=False), "nifM",
+                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("NifB", case=False), "nifB",
+                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("NifE", case=False), "nifE",
+                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("NifV", case=False), "nifV",
+                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("NifK", case=False), "nifK",
+                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("NifU", case=False), "nifU",
+                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("RecA", case=False), "recA",
+                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("NifN", case=False), "nifN",
+                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("VnfD", case=False), "vnfD",
+                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("VnfG", case=False), "vnfG",
+                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("VnfK", case=False), "vnfK",
+                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("AnfK", case=False), "anfK",
+                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("AnfD", case=False), "anfD",
+                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("AnfG", case=False), "anfG",
+                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("fdxN", case=False), "fdxN",
+                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("alt_nitrog_alph", case=False), "nitrogenase alpha chain",
+                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("dinitro_DRAG", case=False), "dinitrogen reductase",
+                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("TIGR02935", case=False), "probable nitrogen fixation protein",
+                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("dinitro_DRAG", case=False), "dinitrogen reductase",
+                   pd.np.where(Norm_Counts_df.description_of_target.str.contains("N2-ase-Ialpha", case=False), "nitrogenase component I, alpha chain", "No_name")))))))))))))))))))))))))
+#write DataFrame to comma separated file (.csv) with file name and TIGRFAM counts
+Norm_Counts_df.to_csv('GeneCountOutput.csv', sep=',')
