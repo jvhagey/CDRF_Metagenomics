@@ -87,4 +87,4 @@ Norm_Counts_df['Gene_Name'] = pd.np.where(Norm_Counts_df.description_of_target.s
                    pd.np.where(Norm_Counts_df.description_of_target.str.contains("dinitro_DRAG", case=False), "dinitrogen reductase",
                    pd.np.where(Norm_Counts_df.description_of_target.str.contains("N2-ase-Ialpha", case=False), "nitrogenase component I, alpha chain", "No_name")))))))))))))))))))))))))
 #write DataFrame to comma separated file (.csv) with file name and TIGRFAM counts
-Norm_Counts_df.to_csv('GeneCountOutput.csv', sep=',')
+Norm_Counts_df.to_csv('GeneCountOutput_Nitro.csv', sep=',')
