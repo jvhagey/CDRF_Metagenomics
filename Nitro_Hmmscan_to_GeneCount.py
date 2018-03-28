@@ -10,7 +10,7 @@ os.chdir("C:/Users/Jill/OneDrive - UC Davis/Documents/collaboration/dairy sequen
 new_header = ("target_name accession query_name E-value score bias E-value score bias exp reg clu ov env dom rep inc description_of_target")
 #files with extention that will be looped through code
 hmmer_files = glob.glob("*.Nitro.tblout")
-csvfile = "C:/Users/Jill/OneDrive - UC Davis/Documents/collaboration/dairy sequencing/Metagenomics/PyTest/GeneCountOutput.csv"
+csvfile = "C:/Users/Jill/OneDrive - UC Davis/Documents/collaboration/dairy sequencing/Metagenomics/PyTest/GeneCountOutput_Nitro.csv"
 appended_counts = [] #making blank dataframe to store counts of each gene from output of for loop
 #this loops through *.tblout files from HMMER and removes comment lines so that data analysis can continue down stream
 for file in hmmer_files:
