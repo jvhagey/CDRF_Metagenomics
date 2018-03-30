@@ -1,0 +1,117 @@
+#----------------------------------------------------------------Assembling Genomes: Normalization--------------------------------------------------------------------------------------------------#
+##http://khmer-protocols.readthedocs.io/en/v0.8.4/metagenomics/2-diginorm.html
+
+##Step 1 Quality clean data and trip out zip files
+for f in /share/tearlab/Maga/Jill/CDRF_MetaGenome/Raw/*R1_001.fastq.gz
+do 
+	fname=$(basename $f _L005_R1_001.fastq.gz) 
+	echo $fname
+	echo "#!/bin/bash" > $fname.sh
+	echo "##" >> $fname.sh
+	echo "#SBATCH --mem=20G" >> $fname.sh
+	echo "#SBATCH --time=6-18:0:0" >> $fname.sh
+	echo "#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Error_Out_Files/${fname}.cleaning.out" >> $fname.sh
+	echo "#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Error_Out_Files/${fname}.cleaning.err" >> $fname.sh
+	echo "module load fastx_toolkit/0.0.14" >> $fname.sh
+	echo "module load khmer/2.0-rc1" >> $fname.sh
+	echo "time interleave-reads.py /share/tearlab/Maga/Jill/CDRF_MetaGenome/KneadData/${fname}/${fname}_L005_R1_001_kneaddata_paired_1.fastq /share/tearlab/Maga/Jill/CDRF_MetaGenome/KneadData/${fname}/${fname}_L005_R1_001_kneaddata_paired_2.fastq > ${fname}.combined.fq" >> $fname.sh
+	echo "echo "done interleaves-reads.py"" >> $fname.sh
+	echo "time fastq_quality_filter -Q33 -q 30 -p 50 -v -i ${fname}.combined.fq > ${fname}.combined-trim.fq" >> $fname.sh
+	echo "echo "done quality filter combined-trim"" >> $fname.sh
+	echo "time fastq_quality_filter -Q33 -q 30 -p 50 -v -i /share/tearlab/Maga/Jill/CDRF_MetaGenome/KneadData/${fname}/${fname}_L005_R1_001_kneaddata_unmatched_1.fastq > ${fname}.R1.trim" >> $fname.sh
+	echo "echo "done quality filter R1 trim"" >> $fname.sh
+	echo "time fastq_quality_filter -Q33 -q 30 -p 50 -v -i /share/tearlab/Maga/Jill/CDRF_MetaGenome/KneadData/${fname}/${fname}_L005_R1_001_kneaddata_unmatched_2.fastq > ${fname}.R2.trim" >> $fname.sh
+	echo "echo "done quality filter R2 trim"" >> $fname.sh
+	echo "time extract-paired-reads.py ${fname}.combined-trim.fq" >> $fname.sh
+	echo "echo "done extract-paired-reads.py"" >> $fname.sh
+	echo "time gzip -9c -v ${fname}.combined-trim.fq.pe > /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Output/${fname}.output.pe.qc.fq.gz" >> $fname.sh
+	echo "echo "done gzip combined-trim"" >> $fname.sh
+	echo "time gzip -9c -v ${fname}.combined-trim.fq.se ${fname}.R1.trim ${fname}.R2.trim > /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Output/${fname}.output.se.qc.fq.gz" >> $fname.sh
+	sbatch $fname.sh
+done 
+
+##Step 2 Normalizing to 20X coverage and then 5x
+#!/bin/bash
+##
+#SBATCH -p gc
+#SBATCH --mem=52G
+#SBATCH --time=6-18:0:0
+#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Error_Out_Files/Norm.step1.out
+#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Error_Out_Files/Norm.step1.err
+module load khmer/2.0-rc1
+#Normaling all samples to a coverage of 20, removal of redunant data allows for faster downstream assembly
+#you need to set x so that x*N = amount of memory available
+time normalize-by-median.py -k 20 -C 20 -N 4 -x 12e9 -p --savetable normC20k20.kh /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Output/*.pe.qc.fq.gz
+echo "done normalizing paired ends"
+time normalize-by-median.py -C 20 --savetable normC20k20.kh --loadtable normC20k20.kh /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Output/*.se.qc.fq.gz
+echo "done normalizing single ends"
+#trimming k-mers that are abundance-1 in high-coverage reads
+time filter-abund.py -V normC20k20.kh *.keep
+echo "Done filtering high-coverage reads"
+#Run lines 11-17 then run script "step 3" then run lines 19-21
+#normalinzing to 5X coverage
+normalize-by-median.py -C 5 -k 20 -N 4 -x 5e8 --savetable normC5k20.kh -p /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Output/*.pe.qc.fq.gz.keep.abundfilt.pe
+normalize-by-median.py -C 5 --savetable normC5k20.kh --loadtable normC5k20.kh /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Output/*.pe.qc.fq.gz.keep.abundfilt.se /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Output/*.se.qc.fq.gz.keep.abundfilt
+
+##Step 3 Extracting pairs after 20X coverage before doing 5X coverage
+for f in /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Output/*.pe.qc.fq.gz.keep.abundfilt
+do 
+	fname=$(basename $f .pe.qc.fq.gz.keep.abundfilt) 
+	echo $fname
+	echo "#!/bin/bash" > $fname.extract_pairs.sh
+	echo "##" >> $fname.extract_pairs.sh
+	echo "#SBATCH -p gc" >> $fname.extract_pairs.sh
+	echo "#SBATCH --mem=20G" >> $fname.extract_pairs.sh
+	echo "#SBATCH --time=6-18:0:0" >> $fname.extract_pairs.sh
+	echo "#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Error_Out_Files/${fname}.extract_pairs.out" >> $fname.extract_pairs.sh
+	echo "#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Error_Out_Files/${fname}.extract_pairs.err" >> $fname.extract_pairs.sh
+	echo "module load khmer/2.0-rc1" >> $fname.extract_pairs.sh
+	echo "time extract-paired-reads.py /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Output/${fname}.pe.qc.fq.gz.keep.abundfilt" >> $fname.extract_pairs.sh
+	echo "echo "done extract-paired-reads.py"" >> $fname.extract_pairs.sh
+	sbatch $fname.extract_pairs.sh
+done
+
+
+#Step 4 Zipping and combing files
+for f in /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Output/*.pe.qc.fq.gz.keep.abundfilt
+do 
+	fname=$(basename $f .pe.qc.fq.gz.keep.abundfilt) 
+	echo $fname
+	echo "#!/bin/bash" > $fname.zipping.sh
+	echo "##" >> $fname.zipping.sh
+	echo "#SBATCH -p gc" >> $fname.zipping.sh
+	echo "#SBATCH --mem=20G" >> $fname.zipping.sh
+	echo "#SBATCH --time=6-18:0:0" >> $fname.zipping.sh
+	echo "#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Error_Out_Files/${fname}.zipping.out" >> $fname.zipping.sh
+	echo "#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Error_Out_Files/${fname}.zipping.err" >> $fname.zipping.sh
+	echo "echo "#Zipping files"" >> $fname.zipping.sh
+	echo "gzip -9c ${fname}.pe.qc.fq.gz.keep.abundfilt.pe.keep > ${fname}.pe.kak.qc.fq.gz" >> $fname.zipping.sh
+	echo "echo "done zipping paired ends"" >> $fname.zipping.sh
+	echo "gzip -9c ${fname}.pe.qc.fq.gz.keep.abundfilt.se.keep ${fname}.se.qc.fq.gz.keep.abundfilt.keep > ${fname}.se.kak.qc.fq.gz" >> $fname.zipping.sh
+	echo "echo "done zipping single ends"" >> $fname.zipping.sh
+	echo "mv *.kak.qc.fq.gz ../Normalization/" >> $fname.zipping.sh
+	sbatch $fname.zipping.sh
+done
+
+#Step 5 get read stats
+#!/bin/bash
+##
+#SBATCH -p gc
+#SBATCH --mem=20G
+#SBATCH --time=6-18:0:0
+#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Error_Out_Files/${fname}.stats.out
+#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Error_Out_Files/${fname}.stats.err
+module load khmer/2.0-rc1
+cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Output/
+readstats.py *.kak.qc.fq.gz *.?e.qc.fq.gz
+
+#----------------------------------------------------------------Assembling Genomes: Assembly--------------------------------------------------------------------------------------------------#
+#Step 1 Assembling contigs with MEGAHIT
+#!/bin/bash
+##
+#SBATCH --mem=250G
+#SBATCH -p gc512
+#SBATCH --time=6-18:0:0
+#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Error_Out_Files/C5_megahit.out
+#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Error_Out_Files/C5_megahit.err
+/share/tearlab/Maga/Jill/bin/megahit/megahit --verbose --continue -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/MEGAHIT/C5_Results/ --12 /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Normalization/All_kak.qc.fq.gz
