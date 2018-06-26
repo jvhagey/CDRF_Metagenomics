@@ -20,15 +20,16 @@ anvi-run-hmms -T 12 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/An
 #Will need to run Foam_to_anvio.py to get files formated properly
 anvi-run-hmms -T 70 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/fixed.contigsV4.db --hmm-profile-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/FOAM_2018/
 
-#Running CAZy
+
+#Adding CAZy to database
+#Will need to run CAZy_to_anvio.py to get files formated properly
 anvi-run-hmms -T 14 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/fixed.contigsV4.db --hmm-profile-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/CAZy_Hmms/
 
-#Running Cogs 
+#Adding Cogs to database 
 #Setting up NCBI Cogs
 anvi-setup-ncbi-cogs --num-threads 15 --reset --cog-data-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/Cogs_2018
-
+#Running Cogs
 anvi-run-ncbi-cogs --sensitive --num-threads 15 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/fixed.contigsV4.db --cog-data-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/Cog_2018/
-
 
 #-------------------------------------------------Taxanomic Annotation-----------------------------------------------------------------------------#
 #Getting Gene calls from Anvio database 
@@ -41,3 +42,33 @@ anvi-get-dna-sequences-for-gene-calls -c /share/magalab/fixed.contigsV4.db -o /s
 #Adding taxa names with kaiju
 time /share/tearlab/Maga/Jill/bin/kaiju/bin/addTaxonNames -t /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/nodes.dmp -n /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/names.dmp -i /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/anvioDB_kaiju_out -r superkingdom,phylum,order,class,family,genus,species -o anvioDB_kaiju-names_out
 
+#-------------------------------------------Making sam/bam files to make anvi profiles-----------------------------------------------------------------------#
+#Bash script
+for f in /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Normalization/*.output.pe.kak.qc.fq.gz
+do
+	fname=$(basename $f .output.pe.kak.qc.fq.gz)
+	echo $fname
+	echo "#!/bin/bash" > $fname.C5.MB.Anvi.sh
+	echo "##" >> $fname.C5.MB.Anvi.sh
+	echo "#SBATCH --mem=10G" >> $fname.C5.MB.Anvi.sh
+	echo "#SBATCH --time=2-18:0:0" >> $fname.C5.MB.Anvi.sh
+	echo "#SBATCH -p gc,gc64,gc128,animal_sciences" >> $fname.C5.MB.Anvi.sh
+	echo "#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Error_Out_Files/${fname}_sam_making_bam.out" >> $fname.C5.MB.Anvi.sh
+	echo "#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Error_Out_Files/${fname}_sam_making_bam.err" >> $fname.C5.MB.Anvi.sh
+	echo "module load bowtie2/2.2.8" >> $fname.C5.MB.Anvi.sh
+	echo "module load samtools/1.8" >> $fname.C5.MB.Anvi.sh
+	echo "module load khmer/2.0-rc1" >> $fname.C5.MB.Anvi.sh
+	echo "#time split-paired-reads.py -f -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Normalization/Split/ -1 /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Normalization/Split/${fname}.output.1.pe.kak.qc.fq.gz -2 /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Normalization/Split/${fname}.output.2.pe.kak.qc.fq.gz /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Normalization/${fname}.output.pe.kak.qc.fq.gz" >> $fname.C5.MB.Anvi.sh
+	echo "#echo "done split-paired-reads"" >> $fname.C5.MB.Anvi.sh
+	echo "#echo "Note that running split-paired-reads.py will unzip file. Bowtie2 will error out if .gz is end of name without file being zipped."" >> $fname.C5.MB.Anvi.sh
+	echo "#time mv /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Normalization/Split/${fname}.output.1.pe.kak.qc.fq.gz /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Normalization/Split/${fname}.output.1.pe.kak.qc.fastq" >> $fname.C5.MB.Anvi.sh
+	echo "#time mv /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Normalization/Split/${fname}.output.2.pe.kak.qc.fq.gz /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Normalization/Split/${fname}.output.2.pe.kak.qc.fastq" >> $fname.C5.MB.Anvi.sh
+	echo "#echo "Done renaming file"" >> $fname.C5.MB.Anvi.sh
+	echo "#time bowtie2 --threads 8 -x /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_Mapping/fixed.contigs -1 /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Normalization/Split/${fname}.output.1.pe.kak.qc.fastq -2 /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Normalization/Split/${fname}.output.2.pe.kak.qc.fastq -U /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Normalization/${fname}.output.se.kak.qc.fq.gz -S /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_Mapping/${fname}.sam" >> $fname.C5.MB.Anvi.sh
+	echo "#echo "done bowtie2 both"" >> $fname.C5.MB.Anvi.sh
+	echo "time samtools view -F 4 -bS /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_Mapping/${fname}.sam > /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_Mapping/${fname}-RAW.bam" >> $fname.C5.MB.Anvi.sh
+	echo "echo "done samtools view both"" >> $fname.C5.MB.Anvi.sh
+	echo "time samtools sort -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_Mapping/${fname}.sorted.bam /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_Mapping/${fname}-RAW.bam" >> $fname.C5.MB.Anvi.sh
+	echo "echo "done samtools sort both"" >> $fname.C5.MB.Anvi.sh 
+	sbatch $fname.C5.MB.Anvi.sh
+done
