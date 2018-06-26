@@ -1,0 +1,43 @@
+#-------------------------------------------------Creating database-----------------------------------------------------------------------------#
+#Reformating fasta file to make contig database
+anvi-script-reformat-fasta -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5/fixed.contigs.fa -l 300 --simplify-names --report-file /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5/contigs.reformat.txt /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/MEGAHIT/C5_Results/final.contigs.fa
+
+#Building database
+anvi-gen-contigs-database -f /share/magalab/fixed.contigs.fa -o /share/magalab/fixed.contigsV4.db -n 'CDRF_Metagenome'
+#Checking Stats
+anvi-display-contigs-stats /share/magalab/fixed.contigsV4.db --report-as-text --output /share/magalab/contig_stats/
+
+#-------------------------------------------------Functional Annotation-----------------------------------------------------------------------------#
+#Running Resfam_Hmms for antibiotic resistance genes. 
+#Will need to run ResFam_to_anvio.py to format files correctly for this to run on anvio
+#this needed more mem than 50G
+anvi-run-hmms -T 12 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/fixed.contigsV4.db --hmm-profile-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/ResFam_Hmms/
+
+#Running custom hmms Nitrogen fixation genes
+anvi-run-hmms -T 12 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/fixed.contigsV4.db --hmm-profile-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/Nif_Hmms/
+
+#Running hmm from Foam collection
+#Will need to run Foam_to_anvio.py to get files formated properly
+anvi-run-hmms -T 70 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/fixed.contigsV4.db --hmm-profile-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/FOAM_2018/
+
+#Running CAZy
+anvi-run-hmms -T 14 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/fixed.contigsV4.db --hmm-profile-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/CAZy_Hmms/
+
+#Running Cogs 
+#Setting up NCBI Cogs
+anvi-setup-ncbi-cogs --num-threads 15 --reset --cog-data-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/Cogs_2018
+
+anvi-run-ncbi-cogs --sensitive --num-threads 15 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/fixed.contigsV4.db --cog-data-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/Cog_2018/
+
+
+#-------------------------------------------------Taxanomic Annotation-----------------------------------------------------------------------------#
+#Getting Gene calls from Anvio database 
+anvi-get-dna-sequences-for-gene-calls -c /share/magalab/fixed.contigsV4.db -o /share/magalab/C5_V4gene-calls.fa
+
+#Running Kaiju
+#this part needs more than 40G memory and ran with 100G
+/share/tearlab/Maga/Jill/bin/kaiju/bin/kaiju -v -z 10 -t /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/nodes.dmp -f /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/kaiju_db_nr_euk.fmi -i /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/C5_V4gene-calls.fa -o anvioDB_kaiju_out
+
+#Adding taxa names with kaiju
+time /share/tearlab/Maga/Jill/bin/kaiju/bin/addTaxonNames -t /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/nodes.dmp -n /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/names.dmp -i /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/anvioDB_kaiju_out -r superkingdom,phylum,order,class,family,genus,species -o anvioDB_kaiju-names_out
+
