@@ -1,4 +1,4 @@
-#-------------------------------------------------Creating database-----------------------------------------------------------------------------#
+#-------------------------------------------------Creating database (anvio now V.4)-----------------------------------------------------------------------------#
 #Reformating fasta file to make contig database
 anvi-script-reformat-fasta -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5/fixed.contigs.fa -l 300 --simplify-names --report-file /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5/contigs.reformat.txt /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/MEGAHIT/C5_Results/final.contigs.fa
 
@@ -16,10 +16,13 @@ anvi-run-hmms -T 12 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/An
 #Running custom hmms Nitrogen fixation genes
 anvi-run-hmms -T 12 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/fixed.contigsV4.db --hmm-profile-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/Nif_Hmms/
 
-#Running hmm from Foam collection
+##Running hmm from Foam collection
+#Tried this and this ran for 30days without completetion ... decided to subset out the nitrogen related genes and run that
 #Will need to run Foam_to_anvio.py to get files formated properly
 anvi-run-hmms -T 70 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/fixed.contigsV4.db --hmm-profile-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/FOAM_2018/
 
+##Running Nitrogen cycle hmm from subset of Foam collection
+anvi-run-hmms -T 40 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/fixed.contigsV4.db --hmm-profile-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/FOAM_2018/Foam_Nitro/
 
 #Adding CAZy to database
 #Will need to run CAZy_to_anvio.py to get files formated properly
@@ -71,4 +74,51 @@ do
 	echo "time samtools sort -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_Mapping/${fname}.sorted.bam /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_Mapping/${fname}-RAW.bam" >> $fname.C5.MB.Anvi.sh
 	echo "echo "done samtools sort both"" >> $fname.C5.MB.Anvi.sh 
 	sbatch $fname.C5.MB.Anvi.sh
+done
+###For whatever reason Anvio didn't like how this was sorted so I resorted them via anvio. 
+#-------------------------------------------Upgrading database to V.12 (anvio now V5.1) -----------------------------------------------------------------------#
+cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/
+cp fixed.contigsV4.db fixed.contigsV5.db
+anvi-migrate-db -t 12 fixed.contigsV5.db
+#----------------------------------------------Adding Kaiju Taxonomy to Database -----------------------------------------------------------------------------#
+time anvi-import-taxonomy-for-genes -i /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/anvioDB_kaiju-names_out -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/fixed.contigsV5.db -p kaiju --just-do-it
+echo "Done adding Taxonomy to contig DB"
+#-------------------------------------------Sorting Bam files with Anvio-----------------------------------------------------------------------#
+for f in /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_Mapping/*-RAW.bam
+do
+	fname=$(basename $f -RAW.bam)
+	echo $fname
+	echo "#!/bin/bash" > $fname.AnviBam.sh
+	echo "##" >> $fname.AnviBam.sh
+	echo "#SBATCH -p production" >> $fname.AnviBam.sh
+	echo "#SBATCH --mem=10G" >> $fname.AnviBam.sh
+	echo "#SBATCH --time=2-18:0:0" >> $fname.AnviBam.sh
+	echo "#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_Mapping/Error_Out_Files/${fname}_Bam.out" >> $fname.AnviBam.sh
+	echo "#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_Mapping/Error_Out_Files/${fname}_Bam.err" >> $fname.AnviBam.sh
+	echo "cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_Mapping/" >> $fname.AnviBam.sh
+	echo "time "anvi-init-bam ${fname}-RAW.bam -o ${fname}.bam >> $fname.AnviBam.sh
+sbatch $fname.AnviBam.sh
+done
+#-------------------------------------------Making Anvio Profiles for Each Sample-----------------------------------------------------------------------#
+#NOTE: anivo doesn't like sample names to start with numbers so I renamed the samples
+#These took 1-3 days to make
+for f in /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/Anvi_Bam/*.bam
+do
+	fname=$(basename $f .bam)
+	echo $fname
+	echo "#!/bin/bash" > $fname.anvi_profile.sh
+	echo "##" >> $fname.anvi_profile.sh
+	echo "#SBATCH --mem=100G" >> $fname.anvi_profile.sh
+	echo "#SBATCH --time=9-18:0:0" >> $fname.anvi_profile.sh
+	echo "#SBATCH -n 10" >> $fname.anvi_profile.sh
+	echo "#SBATCH -p intel,assembly,production" >> $fname.anvi_profile.sh
+	echo "#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_Mapping/Error_Out_Files/${fname}_anvi_profile2.out" >> $fname.anvi_profile.sh
+	echo "#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_Mapping/Error_Out_Files/${fname}_anvi_profile2.err" >> $fname.anvi_profile.sh
+	echo "echo "Note that I copied .bam files and .bai from /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_Mapping/"" >> $fname.anvi_profile.sh
+	echo "cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/Anvi_Bam/" >> $fname.anvi_profile.sh
+	echo "#time anvi-profile -T 10 -i ${fname}.bam -c ../fixed.contigsV5.db --list-contigs" >> $fname.anvi_profile.sh
+	echo "#echo "Done listing contigs"" >> $fname.anvi_profile.sh
+	echo "time anvi-profile -T 10 -i ${fname}.bam -c ../fixed.contigsV5.db -o ../Profiles/${fname}/ --sample-name ${fname}" >> $fname.anvi_profile.sh
+	echo "echo "done profiles sort both"" >> $fname.anvi_profile.sh 
+	sbatch $fname.anvi_profile.sh
 done
