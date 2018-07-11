@@ -99,7 +99,7 @@ done
 #SBATCH -p gc
 #SBATCH --mem=20G
 #SBATCH --time=6-18:0:0
-#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Error_Out_Files/${fname}.stats.out
+#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Error_Out_Files/${fname}.stats.out #output will end up in these files
 #SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Error_Out_Files/${fname}.stats.err
 module load khmer/2.0-rc1
 cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Output/
