@@ -105,6 +105,17 @@ module load khmer/2.0-rc1
 cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Output/
 readstats.py *.kak.qc.fq.gz *.?e.qc.fq.gz
 
+#Step 6 Combine samples for co-assembly
+#!/bin/bash
+##
+#SBATCH -p gc
+#SBATCH --mem=25G
+#SBATCH --time=6-18:0:0
+#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Error_Out_Files/All_clean_norm_cat.out
+#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Error_Out_Files/All_clean_norm_cat.err
+cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Normalization/
+time cat *.kak.qc.fq.gz > All_kak.qc.fq.gz
+
 #----------------------------------------------------------------Assembling Genomes: Assembly--------------------------------------------------------------------------------------------------#
 #Step 1 Assembling contigs with MEGAHIT
 #!/bin/bash
