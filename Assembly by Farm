@@ -1,0 +1,35 @@
+#!/bin/bash
+##
+#SBATCH -p test
+#SBATCH --mem=25G
+#SBATCH --time=6-18:0:0
+#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Error_Out_Files/All_clean_norm_cat.out
+#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Error_Out_Files/All_clean_norm_cat.err
+cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Normalization/
+#time cat *.kak.qc.fq.gz > All_kak.qc.fq.gz
+time cat 1-*.kak.qc.fq.gz > Farm1_All_kak.qc.fq.gz
+echo "Done Combining farm 1 samples"
+time cat 6-*.kak.qc.fq.gz > Farm6_All_kak.qc.fq.gz
+echo "Done Combining farm 6 samples"
+time cat 8-*.kak.qc.fq.gz > Farm8_All_kak.qc.fq.gz
+echo "Done Combining farm 8 samples"
+time cat 5-*.kak.qc.fq.gz > Farm5_All_kak.qc.fq.gz
+echo "Done Combining farm 5 samples"
+
+#-------------------------------------MEGAHIT Assembly by Farm-----------------------------------------------------------------------------#
+for f in /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Normalization/*_All_kak.qc.fq.gz
+do 
+	fname=$(basename $f _All_kak.qc.fq.gz) 
+	echo $fname
+	echo "#!/bin/bash" > $fname.farm_megahit.sh
+	echo "##" >> $fname.farm_megahit.sh
+	echo "#SBATCH -p assembly" >> $fname.farm_megahit.sh
+	echo "#SBATCH --mem=250G" >> $fname.farm_megahit.sh
+	echo "#SBATCH --time=6-18:0:0" >> $fname.farm_megahit.sh
+	echo "#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Error_Out_Files/${fname}_C5_megahit.out" >> $fname.farm_megahit.sh
+	echo "#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Error_Out_Files/${fname}_C5_megahit.err" >> $fname.farm_megahit.sh
+	echo "cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/" >> $fname.farm_megahit.sh
+	echo "/share/tearlab/Maga/Jill/bin/megahit/megahit  --out-prefix ${fname} --verbose --continue -o ./MEGAHIT/C5_${fname}_Results/ --12 ./Normalization/${fname}_All_kak.qc.fq.gz" >> $fname.farm_megahit.sh
+	sbatch $fname.farm_megahit.sh
+done
+
