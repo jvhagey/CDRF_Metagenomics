@@ -13,3 +13,5 @@ df = df[['Resfam Family Name', 'ResfamID', 'HMM Source']]
 df.columns = ["gene","accession","hmmsource"]
 #write DataFrame to tab separated file (.csv) with file name and TIGRFAM counts
 df.to_csv('Resfam_anvi_genes.txt', sep='\t',index=False)
+
+#even after this there are a few changes that need to be made to the gene names
