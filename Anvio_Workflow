@@ -101,6 +101,7 @@ sbatch $fname.AnviBam.sh
 done
 #-------------------------------------------Making Anvio Profiles for Each Sample-----------------------------------------------------------------------#
 #NOTE: anivo doesn't like sample names to start with numbers so I renamed the samples
+#rename 's/(\d+)-(\d+)_S(\d+)/Farm$1-S$2/' *.bam , rename 's/(\d+)-(\d+)_S(\d+)/Farm$1-S$2/' *.bam.bai
 #These took 1-3 days to make
 for f in /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/Anvi_Bam/*.bam
 do
