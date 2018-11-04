@@ -7,7 +7,7 @@ anvi-gen-contigs-database -f /share/magalab/fixed.contigs.fa -o /share/magalab/f
 #Checking Stats
 anvi-display-contigs-stats /share/magalab/fixed.contigsV4.db --report-as-text --output /share/magalab/contig_stats/
 
-#-------------------------------------------------Functional Annotation-----------------------------------------------------------------------------#
+#----------------------------------------------Functional Annotation with Hmms-----------------------------------------------------------------------------#
 #Running Resfam_Hmms for antibiotic resistance genes. 
 #Will need to run ResFam_to_anvio.py to format files correctly for this to run on anvio
 #this needed more mem than 50G
@@ -17,7 +17,7 @@ anvi-run-hmms -T 12 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/An
 anvi-run-hmms -T 12 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/fixed.contigsV4.db --hmm-profile-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/Nif_Hmms/
 
 ##Running hmm from Foam collection
-#Tried this and this ran for 30days without completetion ... decided to subset out the nitrogen related genes and run that
+#Tried this and this ran for 30days without completion ... decided to subset out the nitrogen related genes and run that
 #Will need to run Foam_to_anvio.py to get files formated properly
 anvi-run-hmms -T 70 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/fixed.contigsV4.db --hmm-profile-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/FOAM_2018/
 
@@ -28,11 +28,19 @@ anvi-run-hmms -T 40 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/An
 #Will need to run CAZy_to_anvio.py to get files formated properly
 anvi-run-hmms -T 14 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/fixed.contigsV4.db --hmm-profile-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/CAZy_Hmms/
 
+#-------------------------------------------Functional Annotation with NCBI Cogs-----------------------------------------------------------------------------#
+
 #Adding Cogs to database 
-#Setting up NCBI Cogs
+#Setting up NCBI Cogs, you only need to run this part if you haven't run it before
 anvi-setup-ncbi-cogs --num-threads 15 --reset --cog-data-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/Cogs_2018
 #Running Cogs
 anvi-run-ncbi-cogs --sensitive --num-threads 15 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/fixed.contigsV4.db --cog-data-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/Cog_2018/
+
+#----------------------------------------------Functional Annotation with Prokka-----------------------------------------------------------------------------#
+##This will probably have to go before the making contig database eventually.
+
+#----------------------------------------Functional Annotation with GhostKOALA-----------------------------------------------------------------------------#
+
 
 #-------------------------------------------------Taxanomic Annotation-----------------------------------------------------------------------------#
 #Getting Gene calls from Anvio database 
