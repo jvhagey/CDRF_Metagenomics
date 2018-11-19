@@ -20,6 +20,8 @@ egrep "COG[0-9]{4}" ./Output/Standard.gff | cut -f9 | sed 's/.\+COG\([0-9]\+\).\
 Next we downloaded the most recent data (2014 update) from NCBI's COG web page https://www.ncbi.nlm.nih.gov/COG/
 The Standard.ec and Standard.cog file can be parced into something that R can used with XXX.py and Prokka_Cog_Counts.py respectively. 
 
+JGI also has a list of Cogs: https://img.jgi.doe.gov/cgi-bin/m/main.cgi?section=FindFunctions&page=cogid2cat
+
 MinPath
 cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/MinPath/
 python2 /share/magalab/bin/MinPath/MinPath1.4.py -ko ../GhostKOALA/user_ko_all.txt -report Minpath_ko.report -details Minpath_ko.details
