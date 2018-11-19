@@ -1,4 +1,7 @@
-#Now, we will take a look at the GFF file made by Prokka:
+After running Prokka:
+prokka --cpus 20 --metagenome --outdir ../Prokka/Output_redo/ --prefix Standard fixed.contigsV5_1000.fa 
+
+#We will take a look at the GFF file made by Prokka:
 less -S ./Output/Standard.gff
 #You will notice that the first lines in the GFF file show the annotated sequence regions. 
 #To skip these and get directly to the annotations you can do:
