@@ -42,10 +42,10 @@ do
 	echo "#SBATCH -p gc64,gc128,gc512,gc256" >> ${NEW[$i]}.Kaiju.sh
 	echo "#SBATCH --mem=120G" >> ${NEW[$i]}.Kaiju.sh
 	echo "#SBATCH --time=6-18:0:0" >> ${NEW[$i]}.Kaiju.sh
-	echo "#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Kaiju_2018/Kaiju_Output/Error_Out_Files/${NEW[$i]}.Kaiju.out" >> ${NEW[$i]}.Kaiju.sh
-	echo "#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Kaiju_2018/Kaiju_Output/Error_Out_Files/${NEW[$i]}.Kaiju.err" >> ${NEW[$i]}.Kaiju.sh
+	echo "#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Kaiju_2018/Error_Out_Files/${NEW[$i]}.Kaiju.out" >> ${NEW[$i]}.Kaiju.sh
+	echo "#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Kaiju_2018/Error_Out_Files/${NEW[$i]}.Kaiju.err" >> ${NEW[$i]}.Kaiju.sh
 	echo "#Note this script (line 27) ran out of memory with 50G and 6 threads. Needed 120G and 10 threads" >> ${NEW[$i]}.Kaiju.sh
-	echo "time /share/tearlab/Maga/Jill/bin/kaiju/bin/kaiju -z 10 -t /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/nodes.dmp -f /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/kaiju_db_nr_euk.fmi -i /share/tearlab/Maga/Jill/CDRF_MetaGenome/KneadData/${NEW[$i]}/${NEW[$i]}_L005_R1_001_kneaddata_paired_1.fastq -j /share/tearlab/Maga/Jill/CDRF_MetaGenome/KneadData/${NEW[$i]}/${NEW[$i]}_L005_R1_001_kneaddata_paired_2.fastq -o ${NEW[$i]}_kaiju_out" >> ${NEW[$i]}.Kaiju.sh
+	echo "#time /share/tearlab/Maga/Jill/bin/kaiju/bin/kaiju -z 10 -t /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/nodes.dmp -f /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/kaiju_db_nr_euk.fmi -i /share/tearlab/Maga/Jill/CDRF_MetaGenome/KneadData/${NEW[$i]}/${NEW[$i]}_L005_R1_001_kneaddata_paired_1.fastq -j /share/tearlab/Maga/Jill/CDRF_MetaGenome/KneadData/${NEW[$i]}/${NEW[$i]}_L005_R1_001_kneaddata_paired_2.fastq -o ${NEW[$i]}_kaiju_out" >> ${NEW[$i]}.Kaiju.sh
 	echo "#will make report down to genus level of all classified taxa in report" >> ${NEW[$i]}.Kaiju.sh
 	echo "time /share/tearlab/Maga/Jill/bin/kaiju/bin/kaijuReport -t /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/nodes.dmp -n /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/names.dmp -i /share/tearlab/Maga/Jill/CDRF_MetaGenome/Kaiju_2018/Kaiju_Output/${NEW[$i]}_kaiju_out -r genus -o ${NEW[$i]}_kaiju_out_genus.summary" >> ${NEW[$i]}.Kaiju.sh
 	echo "time /share/tearlab/Maga/Jill/bin/kaiju/bin/kaijuReport -t /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/nodes.dmp -n /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/names.dmp -i /share/tearlab/Maga/Jill/CDRF_MetaGenome/Kaiju_2018/Kaiju_Output/${NEW[$i]}_kaiju_out -r species -o ${NEW[$i]}_kaiju_out_species.summary" >> ${NEW[$i]}.Kaiju.sh
