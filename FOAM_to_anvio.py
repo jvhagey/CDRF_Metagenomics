@@ -4,9 +4,7 @@
 import pandas as pd
 import re
 #making txt file for gene.txt file to run anvi-run-hmm
-#file = "C:/Users/jvhagey/Desktop/Acc_num.txt"
 file = "C:/Users/Jill/Desktop/Acc_num.txt"
-#lines = open(file).readlines() #read linies of file
 with open(file, "r+") as f: #open file for reading and writing
     filedata = f.read()
     #Removing lines starting with --
