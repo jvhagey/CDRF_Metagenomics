@@ -1,0 +1,3 @@
+Emmanuel Prestat, Maude M. David, Jenni Hultman, Neslihan Taş, Regina Lamendella, Jill Dvornik, Rachel Mackelprang, David D. Myrold, Ari Jumpponen, Susannah G. Tringe, Elizabeth Holman, Konstantinos Mavromatis, Janet K. Jansson; 
+FOAM (Functional Ontology Assignments for Metagenomes): a Hidden Markov Model (HMM) database with environmental focus,
+Nucleic Acids Research, Volume 42, Issue 19, 29 October 2014, Pages e145, https://doi.org/10.1093/nar/gku702
