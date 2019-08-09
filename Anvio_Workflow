@@ -1,58 +1,96 @@
-#-------------------------------------------------Creating database (anvio now V.4)-----------------------------------------------------------------------------#
-#Reformating fasta file to make contig database
-anvi-script-reformat-fasta -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5/fixed.contigs.fa -l 300 --simplify-names --report-file /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5/contigs.reformat.txt /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/MEGAHIT/C5_Results/final.contigs.fa
+#-------------------------------------------------Creating database (anvio now V5.5)-----------------------------------------------------------------------------#
+cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.1/
+#by using the cut off of 1,000 instead of 300bp we end up with ~800k Rather than 5-6million contigs when I used 300bp
+#using a cut off of 2,500 you get 124k contigs and a cut of of 5,000 gives you 24k contigs
 
+time anvi-script-reformat-fasta -o fixed.contigsV5_1000.fa -l 1000 --simplify-names --report-file contigs_1000.reformatA.txt ../../MEGAHIT/C5_Results/final.contigs.fa
+#echo "Done Reformating Fasta 1000"
+
+cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/
 #Building database
-anvi-gen-contigs-database -f /share/magalab/fixed.contigs.fa -o /share/magalab/fixed.contigsV4.db -n 'CDRF_Metagenome'
+anvi-gen-contigs-database -f ../C5_V5.1/fixed.contigs.fa -o fixed.contigsV5.5.db -n 'CDRF_Metagenome'
 #Checking Stats
-anvi-display-contigs-stats /share/magalab/fixed.contigsV4.db --report-as-text --output /share/magalab/contig_stats/
+anvi-display-contigs-stats fixed.contigsV5.5.db --report-as-text --output contig_stats.txt
 
-#----------------------------------------------Functional Annotation with Hmms-----------------------------------------------------------------------------#
-#Running Resfam_Hmms for antibiotic resistance genes. 
-#Will need to run ResFam_to_anvio.py to format files correctly for this to run on anvio
-#this needed more mem than 50G
-anvi-run-hmms -T 12 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/fixed.contigsV4.db --hmm-profile-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/ResFam_Hmms/
+#----------------------------------------------Functional Annotation with Pfam Hmms-----------------------------------------------------------------------------#
+#!/bin/bash
+##
+#SBATCH --mem=50G
+#SBATCH --time=7-18:0:0
+#SBATCH -p production
+#SBATCH -n 20
+#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/Error_Out_Files/C5_PfamsV5.5_1k_running.out
+#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/Error_Out_Files/C5_PfamsV5.5_1k_running.err
+
+source activate Anvio5.5
+
+#Annotating genes in contigs database with functions from the Pfams.
+cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/
+#This continues to give errors when downloading
+#time anvi-setup-pfams --reset --pfam-data-dir /share/magalab/bin/anaconda3/envs/Anvio5.5/lib/python3.6/site-packages/anvio/data/misc/Pfams/
+#echo "done setting up Pfams directory"
+time anvi-run-pfams -c fixed.contigsV5.5.db -T 20 --pfam-data-dir /share/magalab/bin/anaconda3/envs/Anvio5.5/lib/python3.6/site-packages/anvio/data/misc/Pfams/
+echo "done running up Pfams"
+
+#----------------------------------------------Functional Annotation with custom sets of Hmms-----------------------------------------------------------------------------#
 
 #Running custom hmms Nitrogen fixation genes
 anvi-run-hmms -T 12 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/fixed.contigsV4.db --hmm-profile-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/Nif_Hmms/
 
-##Running hmm from Foam collection
+#-----------------------------FOAM Nitrogen Cycle Hmms
+##Running hmm from Foam collection 
 #Tried this and this ran for 30days without completion ... decided to subset out the nitrogen related genes and run that
-#Will need to run Foam_to_anvio.py to get files formated properly
 anvi-run-hmms -T 70 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/fixed.contigsV4.db --hmm-profile-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/FOAM_2018/
-
+#Will need to run Foam_to_anvio.py to get files formated properly --> see FOAM_2018 readme.md for formating directions
 ##Running Nitrogen cycle hmm from subset of Foam collection
 anvi-run-hmms -T 40 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/fixed.contigsV4.db --hmm-profile-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/FOAM_2018/Foam_Nitro/
 
-#Adding CAZy to database
-#Will need to run CAZy_to_anvio.py to get files formated properly
-anvi-run-hmms -T 14 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/fixed.contigsV4.db --hmm-profile-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/CAZy_Hmms/
-
 #-------------------------------------------Functional Annotation with NCBI Cogs-----------------------------------------------------------------------------#
 
-#Adding Cogs to database 
-#Setting up NCBI Cogs, you only need to run this part if you haven't run it before
-anvi-setup-ncbi-cogs --num-threads 15 --reset --cog-data-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/Cogs_2018
-#Running Cogs
-anvi-run-ncbi-cogs --sensitive --num-threads 15 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/fixed.contigsV4.db --cog-data-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/Cog_2018/
-
-#----------------------------------------------Functional Annotation with Prokka-----------------------------------------------------------------------------#
-##This will probably have to go before the making contig database eventually.
 #!/bin/bash
 ##
-#SBATCH --mem=30G
-#SBATCH --time=6-18:0:0
-#SBATCH -n 10
+#SBATCH --mem=50G
+#SBATCH --time=7-18:0:0
 #SBATCH -p production
-#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/Prokka/Error_Out_Files/Standard_Prokka.out
-#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/Prokka/Error_Out_Files/Standard_Prokka.err
+#SBATCH -n 20
+#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/Error_Out_Files/C5_CogsV5.5_1k_running.out
+#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/Error_Out_Files/C5_CogsV5.5_1k_running.err
+
+source activate Anvio5.5
+
+#Annotating genes in contigs database with functions from the NCBI’s Clusters of Orthologus Groups.
+cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/
+time anvi-setup-ncbi-cogs -T 20 --just-do-it --reset --cog-data-dir /share/magalab/bin/anaconda3/envs/Anvio5.5/lib/python3.6/site-packages/anvio/data/misc/COG/
+echo "done setting up cog directory"
+time anvi-run-ncbi-cogs -c fixed.contigsV5.5.db -T 20 --sensitive --cog-data-dir /share/magalab/bin/anaconda3/envs/Anvio5.5/lib/python3.6/site-packages/anvio/data/misc/COG/
+echo "done running up cogs"
+
+#----------------------------------------------Functional Annotation with Prokka-----------------------------------------------------------------------------#
+#I did try using prokka for gene calls and then bringing those gene calls into the anvio database to beginning with, but got a lot
+#less gene calls, see note below. In the end, I abandoned this method. 
+
+#!/bin/bash
+##
+#SBATCH --mem=50G
+#SBATCH --time=1-18:0:0
+#SBATCH -n 5
+#SBATCH -p production
+#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.2/Error_Out_Files/C5_1k_prokka_DBV5.2_Anvio.out
+#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.2/Error_Out_Files/C5_1k_prokka_DBV5.2_Anvio.err
 
 aklog
-source activate Prokka
+source activate anvio5.2
 
-cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.1/
-time prokka --cpus 10 --metagenome --outdir ../Prokka/Output/ --prefix Standard fixed.contigsV5_1000.fa 
-echo "Done Prokka"
+time anvi-gen-contigs-database -f ../C5_V5.1/fixed.contigsV5_1000.fa -o fixed.contigsV5_1000_prokka.db --external-gene-calls /share/magalab/bin/Prokka_to_Anvi/gene_calls.txt --ignore-internal-stop-codons --project-name 'CDRF_Metagenome_2016'
+
+#Then import the functional annotations:
+time anvi-import-functions -c fixed.contigsV5_1000_prokka.db -i /share/magalab/bin/Prokka_to_Anvi/gene_annot.txt
+
+##note:
+#You might have noticed that Prokka finds a lot less genes in your metagenome than the standard anvi’o pipeline.
+#This is because of the hard-coded Prodigal option -c in Prokka, which only calls full-length genes (it probably is there for a reason, so proceed with caution).
+#But for metagenomes, you might except to have many partial gene calls, and might want to include them in your analyses. 
+#To achieve that, you can hack the Prokka script and remove the -c option from the Prodigal command.
 
 #----------------------------------------Functional Annotation with GhostKOALA-----------------------------------------------------------------------------#
 #SBATCH --time=3-18:0:0
@@ -108,15 +146,28 @@ time KEGG-to-anvio --KeggDB /share/magalab/bin/GhostKOALA_to_Anvi/GhostKoalaPars
 time anvi-import-functions -c ../C5_V5.2/fixed.contigsV5_1000D.db -i KeggAnnotations-AnviImportable.txt
 
 #-------------------------------------------------Taxanomic Annotation-----------------------------------------------------------------------------#
-#Getting Gene calls from Anvio database 
-anvi-get-dna-sequences-for-gene-calls -c /share/magalab/fixed.contigsV4.db -o /share/magalab/C5_V4gene-calls.fa
+#!/bin/bash
+##
+#SBATCH --mem=80G
+#SBATCH --time=3-18:0:0
+#SBATCH -n 12
+#SBATCH -p production
+#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/Error_Out_Files/C5_Taxa_1k_V5.5.out
+#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/Error_Out_Files/C5_Taxa_1k_V5.5.err
 
-#Running Kaiju
-#this part needs more than 40G memory and ran with 100G
-/share/tearlab/Maga/Jill/bin/kaiju/bin/kaiju -v -z 10 -t /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/nodes.dmp -f /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/kaiju_db_nr_euk.fmi -i /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/C5_V4gene-calls.fa -o anvioDB_kaiju_out
+source activate Anvio5.5
 
-#Adding taxa names with kaiju
-time /share/tearlab/Maga/Jill/bin/kaiju/bin/addTaxonNames -t /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/nodes.dmp -n /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/names.dmp -i /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/anvioDB_kaiju_out -r superkingdom,phylum,order,class,family,genus,species -o anvioDB_kaiju-names_out
+#importing taxonomy
+cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5
+#This line needs more than 50G
+time anvi-get-sequences-for-gene-calls -c fixed.contigsV5.5.db -o C5_V5.5_1000_gene-calls.fa
+echo "Gene calls done"
+time /share/tearlab/Maga/Jill/bin/kaiju/bin/kaiju -v -z 12 -t /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/nodes.dmp -f /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/kaiju_db_nr_euk.fmi -i C5_V5.5_1000_gene-calls.fa -o anvioDB5.5_1000_kaiju_out
+echo "Done with kaiju"
+time /share/tearlab/Maga/Jill/bin/kaiju/bin/addTaxonNames -t /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/nodes.dmp -n /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/names.dmp -i anvioDB5.5_1000_kaiju_out -r superkingdom,phylum,order,class,family,genus,species -o anvioDB5.5_1000_kaiju-names_out
+echo "Done adding taxa names with kaiju"
+time anvi-import-taxonomy-for-genes -i anvioDB5.5_1000_kaiju-names_out -c fixed.contigsV5.5.db -p kaiju --just-do-it
+echo "Done adding Taxonomy to contig DB"
 
 #-------------------------------------------Making sam/bam files to make anvi profiles-----------------------------------------------------------------------#
 #Bash script
@@ -149,13 +200,7 @@ do
 	sbatch $fname.C5.MB.Anvi.sh
 done
 ###For whatever reason Anvio didn't like how this was sorted so I resorted them via anvio. 
-#-------------------------------------------Upgrading database to V.12 (anvio now V5.1) -----------------------------------------------------------------------#
-cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/
-cp fixed.contigsV4.db fixed.contigsV5.db
-anvi-migrate-db -t 12 fixed.contigsV5.db
-#----------------------------------------------Adding Kaiju Taxonomy to Database -----------------------------------------------------------------------------#
-time anvi-import-taxonomy-for-genes -i /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/anvioDB_kaiju-names_out -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/fixed.contigsV5.db -p kaiju --just-do-it
-echo "Done adding Taxonomy to contig DB"
+
 #-------------------------------------------Sorting Bam files with Anvio-----------------------------------------------------------------------#
 for f in /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_Mapping/*-RAW.bam
 do
