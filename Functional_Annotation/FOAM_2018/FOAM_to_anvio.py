@@ -14,12 +14,11 @@ import pandas as pd
 import re
 from argparse import ArgumentParser
 
-
 #Defining function to process command-line arguments
 def parse_cmdline():
 	"""Parse command-line arguments for script."""
 	parser = ArgumentParser(prog="FOAM_to_anvio.py", description="Converts Acc_num file into genes.txt file that Anvi'o can use")
-	parser.add_argument("-i", "--indir", dest="indirname", action="store", default=None, required=True, help="Input directory name were .fasta files are found (required)")
+	parser.add_argument("-i", "--indir", dest="indirname", action="store", default=None, required=True, help="Input directory name were Acc_num.txt file is found (required)")
 	return parser.parse_args()
 
 if __name__ == '__main__':
