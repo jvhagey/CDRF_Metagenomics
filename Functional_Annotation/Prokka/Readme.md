@@ -3,8 +3,7 @@ After running Prokka:
 
 We will take a look at the GFF file made by Prokka:  
 `less -S ./Output/Standard.gff`  
-You will notice that the first lines in the GFF file show the annotated sequence regions.  
-To skip these and get directly to the annotations you can do:  
+You will notice that the first lines in the GFF file show the annotated sequence regions. To skip these and get directly to the annotations you can do:  
 `grep -v "^#" ./Output/Standard.gff | less -S`  
 
 Some genes in the dataset should now contain annotations from several databases, such as enzyme comission and COG (Clusters of Orthologous Groups) identifiers. In the downstream analyses we will quantify and compare the abundance of enzymes and metabolic pathways, as well as COGs in the different samples. To do this, we will first extract lists of the genes with enzyme and COG IDs from the GFF file that was produced by PROKKA.
