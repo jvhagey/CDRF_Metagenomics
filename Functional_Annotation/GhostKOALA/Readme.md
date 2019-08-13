@@ -41,5 +41,16 @@ You can now get count frequences out for each level of Kegg Category with the GK
 The output of GhostKOALA can be visulaized in iPATH3. Kegg numbers are extracted from GhostKOALA output.  
 `awk '{print $2}' user_ko_all.txt | sed '/^[[:space:]]*$/d' > iPalA.txt ; awk 'NR==1{print $1, "color"; next} {print $1, "#ff0000", $2}' iPalA.txt > iPal.txt`
 
-To get GhostKOALAs KOs into Anvio: first we will add the necesary header lines.  
+To get GhostKOALAs KOs into Anvio you can follow [this](http://merenlab.org/2018/01/17/importing-ghostkoala-annotations/) tutorial. First, we will add the necesary header lines.   
 `echo -e "contig\taccession_id" > .temp && cat user_ko_all.txt >> .temp && mv .temp user_ko_all.txt`
+
+Download the parser for GhostKOALA  
+`git clone https://github.com/edgraham/GhostKoalaParser.git`  
+
+Now we can import GhostKOALA annotations into Anvio database.  
+
+```
+time KEGG-to-anvio --KeggDB /share/magalab/bin/GhostKOALA_to_Anvi/GhostKoalaParser/samples/KO_Orthology_ko00001.txt -i user_ko_all.txt -o KeggAnnotations-AnviImportable.txt
+#importing
+time anvi-import-functions -c ../C5_V5.5/fixed.contigsV5.5.db -i KeggAnnotations-AnviImportable.txt
+```
