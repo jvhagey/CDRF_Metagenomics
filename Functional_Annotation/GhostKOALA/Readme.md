@@ -1,4 +1,4 @@
-#GhostKOALA  
+GhostKOALA  
 First, run extract gene calls from Anvi'o database.
 ```
 #!/bin/bash
@@ -22,7 +22,7 @@ sed -i 's/>/>genecall_/g' protein-sequences.fa
 echo "Done Changing gene call names"
 ```
 
-GhoastKOALA server only takes files under 300MB so file needs to be split to reduce the size. Note, you will have to double check that a sequence isn't cut off into two files when you do this.  
+GhostKOALA server only takes files under 300MB so file needs to be split to reduce the size. Note, you will have to double check that a sequence isn't cut off into two files when you do this.  
 `split -b 250M -d protein-sequences.fa`  
 
 This gives two files x01 and x00, they were renamed to protein-sequences_1.fa and protein-sequences_2.fa.  
@@ -39,7 +39,7 @@ cat kegg_taxonomy_1.list kegg_taxonomy_2.list > kegg_taxonomy_all.list
 You can now get count frequences out for each level of Kegg Category with the GK_Count_Frequency.py
 
 The output of GhostKOALA can be visulaized in iPATH3. Kegg numbers are extracted from GhostKOALA output.  
-`awk '{print $2}' user_ko_all.txt | sed '/^[[:space:]]*$/d' > iPalA.txt ; awk 'NR==1{print $1, "color"; next} {print $1, "#ff0000", $2}' iPalA.txt > iPal.txt`
+`awk '{print $2}' user_ko_all.txt | sed '/^[[:space:]]*$/d' | sed "1iKO" > iPalA.txt; awk 'NR==1{print $1, "color", "width"; next} {print $1, "#ff0000", "W10" $2}' iPalA.txt > iPal.txt`
 
 To get GhostKOALAs KOs into Anvio you can follow [this](http://merenlab.org/2018/01/17/importing-ghostkoala-annotations/) tutorial. First, we will add the necesary header lines.   
 `echo -e "contig\taccession_id" > .temp && cat user_ko_all.txt >> .temp && mv .temp user_ko_all.txt`
