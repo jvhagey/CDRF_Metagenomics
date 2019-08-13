@@ -32,9 +32,11 @@ After, running GhoastKOALA searching the KEGG database: c_family_euk+genus_prok+
 ```
 cat user_ko_1.txt user_ko_2.txt > user_ko_all.txt
 cat user_ko_definition_1.txt user_ko_definition_2.txt > user_ko_definition_all.txt
-cat user.out.top_1.gz user.out.top_2.gz > user.out.top_all.txt
+zcat user.out.top_1.gz user.out.top_2.gz > user.out.top_all.txt
 cat kegg_taxonomy_1.list kegg_taxonomy_2.list > kegg_taxonomy_all.list
 ```
+There will be blank genecalls that don't have a KO assigned. Remove these rows with. . .  
+`awk  '$2!=""' user_ko_all.txt > user_ko_all_cleaned.txt`  
 
 You can now get count frequences out for each level of Kegg Category with the GK_Count_Frequency.py
 
