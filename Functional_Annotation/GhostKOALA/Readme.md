@@ -1,4 +1,4 @@
-#GhostKOALA
+#GhostKOALA  
 First, run extract gene calls from Anvi'o database.
 ```
 #!/bin/bash
