@@ -11,6 +11,7 @@ import pandas as pd
 import re
 import glob,os
 import csv
+
 from argparse import ArgumentParser
 
 #Defining function to process command-line arguments
@@ -27,7 +28,7 @@ if __name__ == '__main__':
 	#Calling in files
 	os.chdir(args.indirname) #change directory
 	#making dataframes
-	#df_ortho = pd.read_csv("KeggOrthology_Table1.txt", sep=',', header=0)
+	df_ortho = pd.read_csv("KeggOrthology_Table1.txt", sep=',', header=0)
 	df_userdf = pd.read_csv("user_ko_definition_all.txt", sep='\t', header=None)
 	df_taxdf = pd.read_csv("user.out.top_all.txt", sep='\t', header=None)
 	#df_kodf = pd.read_csv("user_ko_all_cleaned.txt", sep='\t', header=None)
@@ -37,8 +38,13 @@ if __name__ == '__main__':
 	df_taxdf.columns = ['Query','accession','Kingdom','Taxa','Lower_taxa','TaxaID','Score'] #renaming columns
 	df_taxdf['Query'] = df_taxdf['Query'].map(lambda x: x.lstrip('user:')) #remove "user:" at beginning of each row in column "Query"
 	df_taxdf = df_taxdf.drop(columns=['TaxaID','Score']) #droping columns
-	new = pd.merge(df_userdf, df_taxdf, on='accession')
+	new = pd.merge(df_userdf, df_ortho, on='accession')# This takes to much memory so have to preprocess
+	# creating a empty bucket to save result
+	del(df_userdf) #delete to save memory
+	del(df_ortho)
 	new2 = pd.merge(new, df_taxdf, on='Query')
+	del(new) #delete to save memory
+	del(df_taxdf) #delete to save memory
 	if args.countoption is None:
 		print("You need to pick either taxa or cat for counts")
 	if args.countoption == 'cat':
@@ -51,22 +57,28 @@ if __name__ == '__main__':
 		cat1.columns = ['Category','Count'] #renaming columns
 		cat2.columns = ['Category','Count']
 		cat3.columns = ['Category','Count']
-		cat1['Percent'] = (cat1['Count']/sum(cat1['Count']))*100 #Add column for percent 
+		cat1['Percent'] = (cat1['Count']/sum(cat1['Count']))*100 #Add column for percent
 		cat2['Percent'] = (cat2['Count']/sum(cat2['Count']))*100
 		cat3['Percent'] = (cat3['Count']/sum(cat3['Count']))*100
 		# Write to	file for reading from R
 		feather.write_dataframe(cat1, "cat1.feather")
 		feather.write_dataframe(cat2, "cat2.feather")
 		feather.write_dataframe(cat3, "cat3.feather")
+		print("feather objects were saved")
 	if args.countoption == 'taxa':
 		#pull out columns with nitrogen fixing KOs
 		Nif_KOs = new2[new2['accession_x'].str.match("K02588|K02586|K02591")] #nifHDK
+		Nif_KOsT = pd.DataFrame(Nif_KOs['Taxa'].value_counts())
+		Nif_KOsT.columns = ['Number of Gene Calls with NifHDK KOs']
+		Nif_KOsT.index.name = 'Taxa'
+		Nif_KOsT.reset_index(inplace=True)
 		print("The Taxa are:")
-		Nif_KOs = pd.DataFrame(Nif_KOs['Taxa'].value_counts())
-		Nif_KOs.columns = ['Taxa','Number of Gene Calls with NifHDK KOs'] #renaming columns
-		Nif_KOs
+		print(Nif_KOsT)
 		Nif_KOs = pd.DataFrame(Nif_KOs['Lower_taxa'].value_counts())
-		Nif_KOs.columns = ['Taxa','Number of Gene Calls with NifHDK KOs'] #renaming columns
-		Nif_KOs
+		Nif_KOs.columns = ['Number of Gene Calls with NifHDK KOs']
+		Nif_KOs.index.name = 'Lower_Taxa'
+		Nif_KOs.reset_index(inplace=True)
+		print("The Lower Taxa are:")
+		print(Nif_KOs)
 	else:
 		print("You need to pick either taxa or cat for counts")
