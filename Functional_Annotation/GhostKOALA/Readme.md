@@ -50,7 +50,23 @@ Download the parser for GhostKOALA
 Now we can import GhostKOALA annotations into Anvio database.  
 
 ```
+#!/bin/bash
+##
+#SBATCH --mem=20G
+#SBATCH --time=3-18:0:0
+#SBATCH -n 3
+#SBATCH -p production
+#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/GhostKOALA/Error_Out_Files/GhostK2Anvi.out
+#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/GhostKOALA/Error_Out_Files/GhostK2Anvi.err
+
+aklog
+source activate Anvio5.5
+
+cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/GhostKOALA/
+#Now we can import ghostKOALA annotations into Anvio database
 time KEGG-to-anvio --KeggDB /share/magalab/bin/GhostKOALA_to_Anvi/GhostKoalaParser/samples/KO_Orthology_ko00001.txt -i user_ko_all.txt -o KeggAnnotations-AnviImportable.txt
+echo "Done with Kegg-to-anvio"
 #importing
-time anvi-import-functions -c ../C5_V5.5/fixed.contigsV5.5.db -i KeggAnnotations-AnviImportable.txt
+time anvi-import-functions -c ../fixed.contigsV5.5.db -i KeggAnnotations-AnviImportable.txt
+echo "Done importing functions"
 ```
