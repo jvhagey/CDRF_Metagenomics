@@ -57,7 +57,15 @@ Once accession numbers had been identified the full genome were downloaded.
 [Clostridium disporicum](https://www.ncbi.nlm.nih.gov/assembly/GCF_001405015.1/#/def) Assembly Accession GCF_001405015.1 BioProject #PRJEB10915 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/CYZX01?display=contigs)  
 [Methanobrevibacter sp. YE315](https://www.ncbi.nlm.nih.gov/assembly/GCA_001548675.1) Assembly Accession GCA_001548675.1 BioProject #PRJNA273773 [Sequence](https://www.ncbi.nlm.nih.gov/nuccore/CP010834.1)  
 [Methanobrevibacter millerae strain SM9](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA49589) Accession BioProject #PRJNA49589 [Sequence](https://www.ncbi.nlm.nih.gov/nuccore/CP011266)  
-[Clostridium sp. Uncultured A]()[Sequence]()
+[Clostridium sp. Uncultured A]() Accession BioProject #PRJEB10915 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/CYZX01?val=FMGR01)  
 [Ruminococcaceae bacterium YAD300](https://www.ncbi.nlm.nih.gov/bioproject/PRJEB16616) Assembly Accession #GCA_900107185.1 BioProject #PRJEB16616 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/FNPA01?display=contigs)  
-
-
+[Sarcina sp. DSM 11001](https://www.ncbi.nlm.nih.gov/bioproject/PRJEB16054) Accession #FNFZ00000000 BioProject #PRJEB16054 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/CYZX01?val=FNFZ01)  
+[Clostridium sp. Uncultured B]() Accession #FMGT01000000 BioProject #PRJEB10915 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/CYZX01?val=FMGT01)  
+[Eubacterium sp. AB3007](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA217194) Accession #JIAD00000000 BioProject #PRJNA217194 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/CYZX01?val=JIAD01)  
+[Erysipelotrichaceae bacterium NK3D112](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA223066) Accession #JNJQ00000000 BioProject #PRJNA223066 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/CYZX01?val=JNJQ01)  
+[Clostridium celatum DSM 1785](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA30375) Accession AMEZ00000000 BioProject #PRJNA30375 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/CYZX01?val=AMEZ01)  
+[Anaerostipes sp. 992a](https://www.ncbi.nlm.nih.gov/nuccore/MJIG00000000) Accession #MJIG00000000 BioProject #PRJNA341691 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/CYZX01?val=MJIG01)  
+[Prevotella bryantii](https://www.ncbi.nlm.nih.gov/nuccore/NPJF00000000) Accession #NPJF00000000 BioProject #PRJNA396820 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/CYZX01?val=NPJF01)  
+[Lachnobacterium bovis](https://www.ncbi.nlm.nih.gov/bioproject/PRJEB16629) Accession #FNPG00000000 BioProject #PRJEB16629 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/CYZX01?val=FNPG01)  
+[Lachnobacterium bacterium](https://www.ncbi.nlm.nih.gov/bioproject/PRJEB19693) Accession #FUZG00000000 BioProject #PRJEB19693 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/CYZX01?val=FUZG01)  
+[Olsenella umbonata](https://www.ncbi.nlm.nih.gov/bioproject/PRJEB15778) Accession #FNWT00000000 BioProject #PRJEB15778 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/CYZX01?val=FNWT01)  
