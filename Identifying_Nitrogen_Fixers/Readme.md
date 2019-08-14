@@ -51,8 +51,13 @@ done
 ```
 
 Once accession numbers had been identified the full genome were downloaded.  
-[Clostridium saudiense](https://www.ncbi.nlm.nih.gov/bioproject/?term=PRJEB4942) Accession #PRJEB4942 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/CBYM01?display=contigs)  
-[Turicibacter sanguinis PC909](https://www.ncbi.nlm.nih.gov/bioproject/?term=PRJNA42765) Accession #PRJNA42765 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/ADMN01?display=contigs)  
-[Romboutsia timonensis](https://www.ncbi.nlm.nih.gov/bioproject/324389) Accession #PRJEB14233 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/FNMT01?display=contigs)  
-[Clostridium disporicum](https://www.ncbi.nlm.nih.gov/assembly/GCF_001405015.1/#/def) Accession #PRJEB10915 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/CYZX01?display=contigs)  
+[Clostridium saudiense](https://www.ncbi.nlm.nih.gov/bioproject/?term=PRJEB4942) Accession #CBYM010000000 BioProject #PRJEB4942 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/CBYM01?display=contigs)  
+[Turicibacter sanguinis PC909](https://www.ncbi.nlm.nih.gov/bioproject/?term=PRJNA42765) Accession #ADMN00000000 BioProject #PRJNA42765 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/ADMN01?display=contigs)  
+[Romboutsia timonensis](https://www.ncbi.nlm.nih.gov/bioproject/324389) Accession #FNMT00000000 BioProject #PRJEB14233 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/FNMT01?display=contigs)  
+[Clostridium disporicum](https://www.ncbi.nlm.nih.gov/assembly/GCF_001405015.1/#/def) Assembly Accession GCF_001405015.1 BioProject #PRJEB10915 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/CYZX01?display=contigs)  
+[Methanobrevibacter sp. YE315](https://www.ncbi.nlm.nih.gov/assembly/GCA_001548675.1) Assembly Accession GCA_001548675.1 BioProject #PRJNA273773 [Sequence](https://www.ncbi.nlm.nih.gov/nuccore/CP010834.1)  
+[Methanobrevibacter millerae strain SM9](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA49589) Accession BioProject #PRJNA49589 [Sequence](https://www.ncbi.nlm.nih.gov/nuccore/CP011266)  
+[Clostridium sp. Uncultured A]()[Sequence]()
+[Ruminococcaceae bacterium YAD300](https://www.ncbi.nlm.nih.gov/bioproject/PRJEB16616) Assembly Accession #GCA_900107185.1 BioProject #PRJEB16616 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/FNPA01?display=contigs)  
+
 
