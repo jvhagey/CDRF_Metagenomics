@@ -221,23 +221,25 @@ done
 #NOTE: anivo doesn't like sample names to start with numbers so I renamed the samples
 #rename 's/(\d+)-(\d+)_S(\d+)/Farm$1-S$2/' *.bam , rename 's/(\d+)-(\d+)_S(\d+)/Farm$1-S$2/' *.bam.bai
 #These took 1-3 days to make
-for f in /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/Anvi_Bam/*.bam
+for f in /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.1/1000_Mapping/Renamed/*.bam
 do
 	fname=$(basename $f .bam)
 	echo $fname
 	echo "#!/bin/bash" > $fname.anvi_profile.sh
 	echo "##" >> $fname.anvi_profile.sh
-	echo "#SBATCH --mem=100G" >> $fname.anvi_profile.sh
-	echo "#SBATCH --time=9-18:0:0" >> $fname.anvi_profile.sh
+	echo "#SBATCH --mem=80G" >> $fname.anvi_profile.sh
+	echo "#SBATCH --time=3-18:0:0" >> $fname.anvi_profile.sh
 	echo "#SBATCH -n 10" >> $fname.anvi_profile.sh
-	echo "#SBATCH -p intel,assembly,production" >> $fname.anvi_profile.sh
-	echo "#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_Mapping/Error_Out_Files/${fname}_anvi_profile2.out" >> $fname.anvi_profile.sh
-	echo "#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_Mapping/Error_Out_Files/${fname}_anvi_profile2.err" >> $fname.anvi_profile.sh
-	echo "echo "Note that I copied .bam files and .bai from /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_Mapping/"" >> $fname.anvi_profile.sh
-	echo "cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/Anvi_Bam/" >> $fname.anvi_profile.sh
-	echo "#time anvi-profile -T 10 -i ${fname}.bam -c ../fixed.contigsV5.db --list-contigs" >> $fname.anvi_profile.sh
-	echo "#echo "Done listing contigs"" >> $fname.anvi_profile.sh
-	echo "time anvi-profile -T 10 -i ${fname}.bam -c ../fixed.contigsV5.db -o ../Profiles/${fname}/ --sample-name ${fname}" >> $fname.anvi_profile.sh
+	echo "#SBATCH -p production" >> $fname.anvi_profile.sh
+	echo "#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/Error_Out_Files/${fname}_anvi_profile.out" >> $fname.anvi_profile.sh
+	echo "#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/Error_Out_Files/${fname}_anvi_profile.err" >> $fname.anvi_profile.sh
+	echo "aklog" >> $fname.anvi_profile.sh
+	echo "source activate Anvio5.5" >> $fname.anvi_profile.sh
+	echo "cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.1/1000_Mapping/" >> $fname.anvi_profile.sh
+	echo "time anvi-profile -T 20 -i ${fname}.bam -c ../../C5_V5.5/fixed.contigsV5.5db --list-contigs" >> $fname.anvi_profile.sh
+	echo "echo "Done listing contigs"" >> $fname.anvi_profile.sh
+	echo "time anvi-profile -T 20 --min-contig-length 1000 --min-coverage-for-variability 5 -i ./Renamed/${fname}.bam -c ../../C5_V5.5/fixed.contigsV5.5.db -o /tmp/Anvio_Profile_Temp.btGg1/${fname}/ --sample-name ${fname} --overwrite-output-destinations" >> $fname.anvi_profile.sh
 	echo "echo "done profiles sort both"" >> $fname.anvi_profile.sh 
+	echo "time cp -r /tmp/Anvio_Profile_Temp.btGg1/${fname}/ ../../C5_V5.5/Profiles/" >> $fname.anvi_profile.sh
 	sbatch $fname.anvi_profile.sh
 done
