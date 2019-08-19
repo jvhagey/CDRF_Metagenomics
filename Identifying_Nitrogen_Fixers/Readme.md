@@ -1,4 +1,55 @@
-Once the Anvi'o database was constructed and parsed to find contigs of interest contigs were binned with MetaBat2
+Once the Anvi'o database was constructed tables of functions, taxonomy and hmm hits were exported. 
+```
+#!/bin/bash
+##
+#SBATCH -p production
+#SBATCH --mem=10G
+#SBATCH -n 2
+#SBATCH --time=10:0:0
+#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/Error_Out_Files/Anvi_export.out
+#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/Error_Out_Files/Anvi_export.err
+
+aklog
+source activate Anvio5.5
+
+cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/
+
+#checking list of functions available
+anvi-export-functions -c fixed.contigsV5.5.db -l
+
+time anvi-export-functions -c fixed.contigsV5.5.db -o ./Anvi_Tables/Functions.txt
+echo "Done exporting Functions"
+
+#Get list of tables available
+anvi-export-table -l fixed.contigsV5.5.db
+
+time anvi-export-table --table genes_taxonomy -o ./Anvi_Tables/genes_taxonomy.txt fixed.contigsV5.5.db
+echo "Done genes_taxonomy"
+time anvi-export-table --table hmm_hits -o ./Anvi_Tables/hmm_hits.txt fixed.contigsV5.5.db
+echo "Done hmm_hits"
+time anvi-export-table --table hmm_hits_info -o ./Anvi_Tables/hmm_hits_info.txt fixed.contigsV5.5.db
+echo "Done hmm_hits_info"
+time anvi-export-table --table gene_functions -o ./Anvi_Tables/gene_functions.txt fixed.contigsV5.5.db
+echo "Done gene_functions"
+time anvi-export-table --table taxon_names -o ./Anvi_Tables/taxon_names.txt fixed.contigsV5.5.db
+echo "Done taxon_names"
+time anvi-export-table --table genes_in_contigs -o ./Anvi_Tables/genes_in_contigs.txt fixed.contigsV5.5.db
+echo "Done genes_in_contigs"
+
+time anvi-export-splits_taxonomy -c fixed.contigsV5.5.db -o ./Anvi_Tables/splits_taxonomy.txt
+
+time anvi-export-table --table splits_taxonomy -o ./Anvi_Tables/splits_taxonomy.txt fixed.contigsV5.5.db
+echo "Done splits_taxonomy"
+time anvi-export-table --table hmm_hits_in_splits -o ./Anvi_Tables/hmm_hits_in_splits.txt fixed.contigsV5.5.db
+echo "Done hmm_hits_in_splits"
+time anvi-export-table --table genes_in_splits -o ./Anvi_Tables/genes_in_splits.txt fixed.contigsV5.5.db
+echo "Done genes_in_splits"
+```
+
+Next we parsed the Anvi'o database tables to find contigs of interest that have hits against genes in the nitrogen cycle. 
+
+
+Once we have a list of contigs of interest we binned contigs with MetaBat2
 
 Prior to running Metabat you need to calculate the depth of coverage
 
@@ -26,7 +77,14 @@ time /software/metabat/2.12.1/static/metabat2 -t 25 -i fixed.contigs.fa -a ../..
 echo "done Metabat 1500"
 ```
 
-After running MetaBAT2, the list of contigs of interest were searched for in the bins. And these bins were placed in a new folder. Sourmash was thing run on each bin to assign taxonomy. 
+After running MetaBAT2, the list of contigs of interest were searched for in the bins. And these bins were placed in a new folder. 
+```
+code for searching bins here.
+
+```
+
+
+Sourmash was run on each bin to assign taxonomy. 
 
 ```
 #!/bin/bash
