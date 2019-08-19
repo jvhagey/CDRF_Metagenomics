@@ -1,3 +1,5 @@
+When this was started Anvi'o was at version 3. It was rerun with version 5.5 to confirm it works. 
+
 #-------------------------------------------------Creating database (anvio now V5.5)-----------------------------------------------------------------------------#
 cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.1/
 #by using the cut off of 1,000 instead of 300bp we end up with ~800k Rather than 5-6million contigs when I used 300bp
@@ -33,17 +35,62 @@ time anvi-run-pfams -c fixed.contigsV5.5.db -T 20 --pfam-data-dir /share/magalab
 echo "done running up Pfams"
 
 #----------------------------------------------Functional Annotation with custom sets of Hmms-----------------------------------------------------------------------------#
+#-----------------------------Nitrogen Fixation Gene Hmms-----------------#
+#!/bin/bash
+##
+#SBATCH --mem=80G
+#SBATCH --time=12-18:0:0
+#SBATCH -p production
+#SBATCH -n 20
+#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/Error_Out_Files/NF_HmmV5.5.out
+#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/Error_Out_Files/NF_HmmV5.5.err
 
-#Running custom hmms Nitrogen fixation genes
-anvi-run-hmms -T 12 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/fixed.contigsV4.db --hmm-profile-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/Nif_Hmms/
+source activate Anvio5.5
 
-#-----------------------------FOAM Nitrogen Cycle Hmms
+#needs more mem than 50G
+cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/
+time anvi-run-hmms -T 20 -c fixed.contigsV5.5.db --hmm-profile-dir ../Nif_Hmms/
+echo "Done HMMER Nitrogen"
+
+#-----------------------------Nitrogen Cycle Gene Hmms-----------------#
+#!/bin/bash
+##
+#SBATCH --mem=80G
+#SBATCH --time=12-18:0:0
+#SBATCH -p production
+#SBATCH -n 20
+#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/Error_Out_Files/Nitro_HmmV5.5.out
+#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/Error_Out_Files/Nitro_HmmV5.5.err
+
+source activate Anvio5.5
+
+#needs more mem than 50G
+cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/
+time anvi-run-hmms -T 20 -c fixed.contigsV5.5.db --hmm-profile-dir ../Nitro_Hmms/
+echo "Done HMMER Nitrogen"
+
+#-----------------------------FOAM Nitrogen Cycle Hmms-----------------#
 ##Running hmm from Foam collection 
 #Tried this and this ran for 30days without completion ... decided to subset out the nitrogen related genes and run that
 anvi-run-hmms -T 70 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/fixed.contigsV4.db --hmm-profile-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/FOAM_2018/
 #Will need to run Foam_to_anvio.py to get files formated properly --> see FOAM_2018 readme.md for formating directions
 ##Running Nitrogen cycle hmm from subset of Foam collection
-anvi-run-hmms -T 40 -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V4/fixed.contigsV4.db --hmm-profile-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/FOAM_2018/Foam_Nitro/
+
+#!/bin/bash
+##
+#SBATCH --mem=80G
+#SBATCH --time=30-18:0:0
+#SBATCH -p production
+#SBATCH -n 40
+#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/Error_Out_Files/Foam_Nitro_HmmV5.5.out
+#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/Error_Out_Files/Foam_Nitro_HmmV5.5.err
+
+source activate Anvio5.5
+
+#needs more mem than 50G
+cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/
+time anvi-run-hmms -T 40 -c fixed.contigsV5.5.db --hmm-profile-dir /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/FOAM_2018/Foam_Nitro/
+echo "Done HMMER Foam"
 
 #-------------------------------------------Functional Annotation with NCBI Cogs-----------------------------------------------------------------------------#
 
@@ -93,82 +140,8 @@ time anvi-import-functions -c fixed.contigsV5_1000_prokka.db -i /share/magalab/b
 #To achieve that, you can hack the Prokka script and remove the -c option from the Prodigal command.
 
 #----------------------------------------Functional Annotation with GhostKOALA-----------------------------------------------------------------------------#
-#SBATCH --time=3-18:0:0
-#SBATCH -n 3
-#SBATCH -p production
-#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/GhostKOALA/Error_Out_Files/Get_AA.out
-#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/GhostKOALA/Error_Out_Files/Get_AA.err
-
-aklog
-source activate anvio5.2
-
-#git clone https://github.com/edgraham/GhostKoalaParser.git
-cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.2/
-time anvi-get-sequences-for-gene-calls --get-aa-sequences -c fixed.contigsV5_1000D.db -o ../GhostKOALA/protein-sequences.fa
-echo "Done getting AA calls"
-#adding genecall_ to the end of reach gene call so that the GhoastKOALA server isn't mad at us
-cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/GhostKOALA/
-sed -i 's/>/>genecall_/g' protein-sequences.fa
-echo "Done Changing gene call names"
-#GhoastKOALA server only takes files under 300MB so file needs to be split to reduce the size.
-#Have to double check that a sequence isn't cut off into two files when you do this.
-split -b 250M -d protein-sequences.fa
-
-#As of right now there is some blank amino acid sequences. The following warning was produced when running Cogs.
-
-#WARNING
-#===============================================
-#63 entries in the sequences table had blank sequences :/ This is related to the
-#issue at https://github.com/merenlab/anvio/issues/565. If this is like mid-2018
-#and you still get this warning, please find an anvi'o developer and make them
-#feel embarrassed. If it is earlier than take this as a simple warning that some
-#gene calls in your downstream analyses may have no sequences, and that's OK.
-#This is a very minor issue due to on-the-fly addition of Ribosomal RNA gene
-#calls to the contigs database, and will likely will not affect anything major.
-#This warning will go away when anvi'o can seamlessly work with multiple gene
-#callers (which we are looking forward to implement in the future).
-
-#For right now Meren suggests to just remove the blank sequences, with the following script
-#https://github.com/merenlab/anvio/issues/943
-sed '/^>/ {N; /\n$/d}' protein-sequences2.fa > protein-sequences2_clean.fa
-
-#After running GhoastKOALA you will need to concationate the files 
-cat user_ko1.txt user_ko2.txt > user_ko_all.txt
-
-#Now we will add the necesary header lines
-echo -e "contig\taccession_id" > .temp && cat user_ko_all.txt >> .temp && mv .temp user_ko_all.txt
-
-#Now we can import ghostKOALA annotations into Anvio database
-time KEGG-to-anvio --KeggDB /share/magalab/bin/GhostKOALA_to_Anvi/GhostKoalaParser/samples/KO_Orthology_ko00001.txt -i user_ko_all.txt -o KeggAnnotations-AnviImportable.txt
-#Once we have interproscan results as well we can use the one line to import both, so run only one of theselines!
-time KEGG-to-anvio --KeggDB /share/magalab/bin/GhostKOALA_to_Anvi/GhostKoalaParser/samples/KO_Orthology_ko00001.txt -i user_ko_all.txt -o KeggAnnotations-AnviImportable.txt --interproscan interproscan-results.txt
-#importing to anvio
-time anvi-import-functions -c ../C5_V5.2/fixed.contigsV5_1000D.db -i KeggAnnotations-AnviImportable.txt
-
-#-------------------------------------------------Taxanomic Annotation-----------------------------------------------------------------------------#
-#!/bin/bash
-##
-#SBATCH --mem=80G
-#SBATCH --time=3-18:0:0
-#SBATCH -n 12
-#SBATCH -p production
-#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/Error_Out_Files/C5_Taxa_1k_V5.5.out
-#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/Error_Out_Files/C5_Taxa_1k_V5.5.err
-
-source activate Anvio5.5
-
-#importing taxonomy
-cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5
-#This line needs more than 50G
-time anvi-get-sequences-for-gene-calls -c fixed.contigsV5.5.db -o C5_V5.5_1000_gene-calls.fa
-echo "Gene calls done"
-time /share/tearlab/Maga/Jill/bin/kaiju/bin/kaiju -v -z 12 -t /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/nodes.dmp -f /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/kaiju_db_nr_euk.fmi -i C5_V5.5_1000_gene-calls.fa -o anvioDB5.5_1000_kaiju_out
-echo "Done with kaiju"
-time /share/tearlab/Maga/Jill/bin/kaiju/bin/addTaxonNames -t /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/nodes.dmp -n /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/names.dmp -i anvioDB5.5_1000_kaiju_out -r superkingdom,phylum,order,class,family,genus,species -o anvioDB5.5_1000_kaiju-names_out
-echo "Done adding taxa names with kaiju"
-time anvi-import-taxonomy-for-genes -i anvioDB5.5_1000_kaiju-names_out -c fixed.contigsV5.5.db -p kaiju --just-do-it
-echo "Done adding Taxonomy to contig DB"
-
+#----------------------------------------Functional Annotation with GhostKOALA-----------------------------------------------------------------------------#
+See readme in folder on functional annotation --> GhostKOALA
 #-------------------------------------------Making sam/bam files to make anvi profiles-----------------------------------------------------------------------#
 #Bash script
 for f in /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Normalization/*.output.pe.kak.qc.fq.gz
@@ -235,11 +208,33 @@ do
 	echo "#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/Error_Out_Files/${fname}_anvi_profile.err" >> $fname.anvi_profile.sh
 	echo "aklog" >> $fname.anvi_profile.sh
 	echo "source activate Anvio5.5" >> $fname.anvi_profile.sh
-	echo "cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.1/1000_Mapping/" >> $fname.anvi_profile.sh
-	echo "time anvi-profile -T 20 -i ${fname}.bam -c ../../C5_V5.5/fixed.contigsV5.5db --list-contigs" >> $fname.anvi_profile.sh
+	echo "cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.1/1000_Mapping/Renamed/" >> $fname.anvi_profile.sh
+	echo "time anvi-profile -T 20 -i ./Renamed/${fname}.bam -c ../../C5_V5.5/fixed.contigsV5.5db --list-contigs" >> $fname.anvi_profile.sh
 	echo "echo "Done listing contigs"" >> $fname.anvi_profile.sh
-	echo "time anvi-profile -T 20 --min-contig-length 1000 --min-coverage-for-variability 5 -i ./Renamed/${fname}.bam -c ../../C5_V5.5/fixed.contigsV5.5.db -o /tmp/Anvio_Profile_Temp.btGg1/${fname}/ --sample-name ${fname} --overwrite-output-destinations" >> $fname.anvi_profile.sh
+	echo "time anvi-profile -T 20 --min-contig-length 1000 --min-coverage-for-variability 5 -i ${fname}.bam -c ../../C5_V5.5/fixed.contigsV5.5.db -o /tmp/Anvio_Profile_Temp.btGg1/${fname}/ --sample-name ${fname} --overwrite-output-destinations" >> $fname.anvi_profile.sh
 	echo "echo "done profiles sort both"" >> $fname.anvi_profile.sh 
 	echo "time cp -r /tmp/Anvio_Profile_Temp.btGg1/${fname}/ ../../C5_V5.5/Profiles/" >> $fname.anvi_profile.sh
 	sbatch $fname.anvi_profile.sh
 done
+#-------------------------------------------Merging Anvio Profiles for Each Sample-----------------------------------------------------------------------#
+#!/bin/bash
+##
+#SBATCH --mem=50G
+#SBATCH --time=20-18:0:0
+#SBATCH -n 5
+#SBATCH -p production
+#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/Error_Out_Files/Merge_all_Anvio.out
+#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/Error_Out_Files/Merge_all_Anvio.err
+
+aklog
+source activate Anvio5.5
+
+mkdir /tmp/Anvio_Profile_Temp.btGg1/
+cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/
+cp -r ./Profiles/ /tmp/Anvio_Profile_Temp.btGg1/
+cd /tmp/Anvio_Profile_Temp.btGg1/Profiles/
+time anvi-merge ./Farm6_S7/PROFILE.db ./Farm6_S5/PROFILE.db ./Farm6_S1/PROFILE.db ./Farm5_S11/PROFILE.db ./Farm5_S6/PROFILE.db ./Farm5_S14/PROFILE.db ./Farm1_S1/PROFILE.db ./Farm1_S10/PROFILE.db ./Farm1_S12/PROFILE.db ./Farm8_S10/PROFILE.db ./Farm8_S9/PROFILE.db ./Farm8_S8/PROFILE.db -o ./All-MERGED/ -c /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/fixed.contigsV5.5.db --overwrite-output-destinations
+echo "Done merging all farms"
+
+#on rafter-0 and rafter-16
+cp -r /tmp/Anvio_Profile_Temp.btGg1/Profiles/All-MERGED/ /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/Profiles/
