@@ -1,6 +1,7 @@
-#--------------------------------------------------------Taxonamy Assignment with Kaiju----------------------------------------------------------------#
-##Building database for Kaiju first
+#Taxonamy Assignment with Kaiju  
+Building database for Kaiju first  
 
+```
 #!/bin/bash
 ##
 #SBATCH -p gc128,gc512
@@ -16,9 +17,11 @@ time /share/tearlab/Maga/Jill/bin/kaiju/bin/makeDB.sh -e
 
 cd /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/
 time /share/tearlab/Maga/Jill/bin/kaiju/bin/mkfmi kaiju_db_nr_euk
+```
 
-##Running Kaiju
+Running Kaiju  
 
+```
 #!/bin/bash
 
 NEW[0]=1-10_S26
@@ -57,3 +60,4 @@ do
 	echo "time /share/tearlab/Maga/Jill/bin/kaiju/bin/kaiju2krona -t /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/nodes.dmp -n /share/tearlab/Maga/Jill/bin/kaiju/kaijudb_nr/names.dmp -i /share/tearlab/Maga/Jill/CDRF_MetaGenome/Kaiju_2018/Kaiju_Output/${NEW[$i]}_kaiju-names_out -o ${NEW[$i]}_kaiju-names_out.krona" >> ${NEW[$i]}.Kaiju.sh
 	sbatch ${NEW[$i]}.Kaiju.sh
 done
+```
