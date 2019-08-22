@@ -182,7 +182,6 @@ def find_HDK(data_frame):
                 nifHD = pd.merge(nifH, nifD, on=['contig'], how='inner')
                 nifHDK = pd.merge(nifHD, nifK, on=['contig'], how='inner')
                 print('\033[93m'+ "\nThe taxa at the level of " + args.taxalevel + " nothat contain nifHDK based on custom Hmms from TigrFams assignments are: ")
-                print(nifHDK['t_'+args.taxalevel+'_x'].unique().tolist())
                 print('\n' + CEND)
                 Q = input(CPUR +'\nDo you want to see the data?' + CEND).lower()
                 if Q.startswith('y'):#check to see if this is the dataframe you want printed
