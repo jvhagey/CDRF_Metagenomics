@@ -1,4 +1,4 @@
-Currently, the arguments accepted are:
+Currently, the arguments accepted for `Anvi_table_parser.py` are:
 
 ```
 usage: Identify_Nif_Taxonomy.py [-h] [-t TAXALEVEL] [-l FOAMLEVEL]
@@ -50,3 +50,32 @@ the file saved you will be asked how you want to view the taxonomic data. If you
 supply a file name. If you add `--print-contigs` in combination with any of the above arguments will give you a text file of these
 contigs, just dont forget to set a file name with the `-o` argument. Using the `--find-nifHDK-in-contigs` flag with any of the sources and 
 a taxonomy will tell you what taxa, at the level you choose, have contigs that have hits with those genes. 
+
+If you want to find taxa or contigs identified to have nifHDK genes or a specific gene that were found by multiple methods use the script `Find_common_contigs.py`
+
+Currently, the arguments accepted for `Find_common_contigs.py` are:
+
+```
+usage: Find_common_contigs.py [-h] -i INDIRNAME [-t TAXALEVEL] [--print-taxa]
+                              [--get-taxa-contigs] [-g GENE]
+                              [--get-gene-contigs]
+
+Parses anvi-export-table --table files
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i INDIRNAME, --indir INDIRNAME
+                        Input directory name were taxon_names, genes_taxonomy
+                        and hmm_hits .txt files are found (required)
+  -t TAXALEVEL, --taxa-level TAXALEVEL
+                        Pick taxa level you want reported
+  --print-taxa          Print taxa with nifHDK genes at level chosen to text
+                        file.
+  --get-taxa-contigs    Get contigs with nifHDK genes to text file.
+  -g GENE, --gene GENE  Name of gene to search in dataframe for. You can pass
+                        multiple genes by separating them by a pipe. Ex:
+                        'geneA|geneB'
+  --get-gene-contigs    Get contigs containing gene(s) of choice to text file.
+ ```
+
+
