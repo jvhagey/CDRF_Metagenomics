@@ -77,11 +77,51 @@ time /software/metabat/2.12.1/static/metabat2 -t 25 -i fixed.contigs.fa -a ../..
 echo "done Metabat 1500"
 ```
 
-After running MetaBAT2, the list of contigs of interest were searched for in the bins. And these bins were placed in a new folder. 
-```
-code for searching bins here.
+After running MetaBAT2, the list of contigs of interest were searched for in the bins. And these bins were placed in a new folder.  
+The first step of this is taking the list of contigs names in a text file created by using the parser `python -i ./ `.  Note that I used seqtk, but you can also use qiime1 script `filter_fasta.py` see [here](http://qiime.org/scripts/filter_fasta.html).  
 
 ```
+#!/bin/bash
+##
+#SBATCH --mem=5G
+#SBATCH -p production
+#SBATCH -n 3
+#SBATCH --time=6-18:0:0
+#SBATCH -o /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/SourMash/Error_Out_Files/metabat_anvio_contigs_nif.out
+#SBATCH -e /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/SourMash/Error_Out_Files/metabat_anvio_contigs_nif.err
+
+module load seqtk/1.3
+
+#using seqk search fasta file for specific contigs.
+cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/Anvio/C5_V5.5/
+time seqtk subseq ../C5_V5.1/fixed.contigsV5_1000.fa ../SourMash/GK_NifD_contigs.txt > ../SourMash_2019/contigs_GK_NifD.fa
+
+```
+Then pass grep a file that has contigs in it and search all bins in a folder to get list of file name (AKA the bin) with the contigs of interest in.  
+```
+grep -H -f contigs_GK_NifH.fa ../../MetaBat/C5_Anvio/*.fa > bins_with_GKnifH_Contigs.txt
+```
+Next, parse the list of bins to just get the unique bins that contained these contigs.  
+
+```
+sed 's/:>c_[0-9]\+$//' bins_with_GKnifH_Contigs.txt | sed 's/.*C5_Anvio//' | sed 's/^/C5_Anvio/'| uniq > bins_with_GKnifH_Contigs2.txt
+```
+Lastly, you can make a new directory and copy the bins you identified into a new folder and then run Sourmash on that folder of bins of interest to further confirm species of interest that might be able to nitrogen fix.  
+
+```
+#Make directorys
+mkdir MetaBat_bins_NifH
+mkdir MetaBat_bins_NifD
+mkdir MetaBat_bins_NifK
+
+#copy the fasta files into new folder.
+cd /share/tearlab/Maga/Jill/CDRF_MetaGenome/Assembly_2018/MetaBat/C5_Anvio/
+
+cat ../../Anvio/SourMash/bins_with_GKnifH_Contigs2.txt | xargs cp -t ../../Anvio/SourMash/MetaBat_bins_NifH/
+
+
+```
+
 
 
 Sourmash was run on each bin to assign taxonomy. 
