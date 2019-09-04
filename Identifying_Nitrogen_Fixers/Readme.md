@@ -46,10 +46,15 @@ time anvi-export-table --table genes_in_splits -o ./Anvi_Tables/genes_in_splits.
 echo "Done genes_in_splits"
 ```
 
-Next we parsed the Anvi'o database tables to find contigs of interest that have hits against genes in the nitrogen cycle. 
+Next we parsed the Anvi'o database tables to find contigs of interest that have hits against genes in the nitrogen cycle. First, we identified contigs that had hits with nifHDK in them and were identified this way with Foam_HMMs, GhostKOALA and COGs. Next, we identified contigs that had only one of these nif genes. Bins will be searched for contigs containing nifHDK as well as those having individual contigs for each gene.
 
+```
+python ../run_all_works2.py -i ./ --get-HDK-contigs -o Allmethods_HDK_contigs.txt
+python ../run_all_works2.py -i ./ -g "nifH" -o Allmethods_nifH_contigs.txt
+python ../run_all_works2.py -i ./ -g "nifK|COG2710|nifD" -o Allmethods_nifKD_contigs.txt
+```
 
-Once we have a list of contigs of interest we binned contigs with MetaBat2
+Once we have a list of contigs of interest we binned contigs with MetaBat2.
 
 Prior to running Metabat you need to calculate the depth of coverage
 
