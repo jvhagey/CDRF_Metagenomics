@@ -1,4 +1,4 @@
-#Taxonamy Assignment with Kaiju  
+# Taxonamy Assignment with Kaiju  
 Building database for Kaiju first  
 
 ```
