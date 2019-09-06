@@ -61,3 +61,19 @@ do
 	sbatch ${NEW[$i]}.Kaiju.sh
 done
 ```
+Script `Kaiju_to_R.py` was written to parse kaiju output .summary files into a .csv file that can be read into R. With Kaiju's newest update `Kaiju_v1.7.2_to_R.py` was created to handled Kaiju's new output, which was significantly cleaner. Both have the following options:
+
+```
+usage: exsum.py [-h] -t TAXLEVEL -i INDIRNAME
+
+Parses Kaiju .summary files into an R readable .csv file
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -t TAXLEVEL, --taxonomic-level TAXLEVEL
+                        Pick One: phylum, class, order, family, genus, species
+                        (required)
+  -i INDIRNAME, --indir INDIRNAME
+                        Input directory name were .summary files are found
+                        (required)
+```
