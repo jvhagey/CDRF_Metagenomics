@@ -1,0 +1,170 @@
+---
+title: "Growth Curves"
+author: "Jill Hagey and Naomi Almanzor"
+output: 
+  html_document:
+    theme: spacelab 
+    toc: true
+    toc_depth: 2
+    toc_float: true
+    df_print: paged
+    highlight: espresso
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+#knitr::opts_knit$set(root.dir = "C:/Users/jvhagey/Desktop/") #'relative_path_to_root_from_Rmd
+knitr::opts_knit$set(root.dir = "C:/Users/Jill/OneDrive - UC Davis/Documents/Disseration Lab work/Nitrogen_fixing/")
+getwd()
+```
+
+```{r warning=FALSE, include=FALSE}
+#loading the libraries
+library(growthcurver);packageVersion("growthcurver")
+library(chron); packageVersion("chron") #to fix time
+library(ggplot2); packageVersion("ggplot2")
+library(reshape2); packageVersion("reshape2")
+library(tidyr); packageVersion("tidyr")
+library(dplyr); packageVersion("dplyr")
+library(tidyverse); packageVersion("tidyverse")
+library(knitr); packageVersion("knitr")
+library(kableExtra); packageVersion("kableExtra")
+library(cowplot); packageVersion("cowplot")
+```
+
+Calling in the data.
+
+```{r}
+#calling in the data
+d <- read.table("Growth Curves.txt", header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+#Fixing our times!
+d$Mins <- round((d$Mins/60), 1)
+d <- d[c(1:12),c(1:7)] #dropping NAs
+d
+```
+
+```{r eval=TRUE, include=FALSE}
+#generate names for list of column names
+txs <- c("Time","7mM","3.5mM","1.75mM","0.875mM", "0.4375mM","0mM")
+#adding in column names and adding back in Kinetic read times 
+colnames(d) <- txs
+```
+
+First, we run the growth curve model on all the samples.
+
+```{r eval=TRUE, include=FALSE}
+#Making models for all
+models.all <- lapply(d[2:ncol(d)], function(x) SummarizeGrowth(d$Time, x))
+```
+
+```{r eval=TRUE, include=FALSE}
+df.predicted.plate <- data.frame(Time = d$Time)
+for (i in names(d[2:ncol(d)])){
+df.predicted.plate[[i]] <- predict(models.all[[i]]$model)}
+#changing column name from "time" to "kinetic.read" to merge dataframe correctly
+colnames(df.predicted.plate)[1] <- "Time"
+#Melting dataframes to combine
+melt1 <- melt(d, id.vars = "Time", variable.name = "sample", value.name = "od")
+melt2 <- melt(df.predicted.plate, id.vars = "Time", variable.name = "sample", value.name = "pred.od")
+df.final <- cbind(melt1, pred.od=melt2[,3])
+```
+
+##Growth Curves
+Next we will graph out growth curves different concentrations with NH3.
+
+```{r fig.height = 4, fig.width = 14, eval=TRUE, include=FALSE}
+##the predict line is off since there is no blank sample. 
+ggplot(df.final, aes(x=Time, y=od)) + geom_point(aes(), alpha=0.5) + geom_line(aes(y=pred.od), color="red") + facet_wrap(~sample, ncol = 12) +   theme(strip.text.y=element_text(angle=0,face = "bold"),strip.text.x=element_text(angle=0,face = "bold"), axis.text= element_text(face = "bold"), axis.title=element_text(face = "bold"), panel.grid.major.x = element_blank(),panel.grid.minor.y=element_blank())+
+  labs(x="Time (hrs)", y="Optical Density")
+```
+
+Dots are the data and the red line is predicted values based on the model.
+
+```{r fig.height = 5, fig.width = 16}
+ggplot(df.final, aes(x=Time, y=od)) + geom_point(colour = "blue",aes(), alpha=0.5) + facet_wrap(~sample, ncol = 12) + geom_line(color="blue", size=1) +
+  theme(strip.text.y=element_text(angle=0,face = "bold",size=11),strip.text.x=element_text(angle=0,face = "bold",size=11), 
+        axis.text= element_text(face = "bold"), axis.title=element_text(face = "bold"), panel.grid.major.x = element_blank(),panel.grid.minor.y=element_blank())+
+  labs(x="Time (hrs)", y="Optical Density")
+```
+
+Next we will combine the graphs of the growth curves.
+
+```{r fig.height = 5, fig.width = 7}
+ggplot(df.final, aes(x=Time, y=od, color=sample)) + geom_point(aes(), alpha=0.5) +
+  geom_line(aes(x = Time, y = od, col=sample)) +
+  theme_cowplot(12) +
+  #theme_bw()+
+  theme(strip.text.y=element_text(angle=0,face = "bold",size=11),strip.text.x=element_text(angle=0,face = "bold",size=11), 
+        axis.text= element_text(face = "bold"), axis.title=element_text(face = "bold"),legend.text=element_text(face = "bold"), legend.title=element_text(face = "bold"))+ 
+  labs(color= "NH3 Concentration",x="Time (hrs)", y="Optical Density")
+ggsave("Nitrogen_Growth.png",device = "png", dpi=320, width = 7)
+```
+
+##Growth Stats
+Calculating doubling times for each strain in different media.
+
+```{r}
+make_df <- function(data, val){
+val <- val
+df <- data %>% unlist(recursive = FALSE) %>% enframe() %>% unnest() %>% rename(name='NH3 Concentration', value=val)
+  #print(head(df))
+  #df$Media_Type <- ifelse(grepl("Hemin", df$Sample_Type), "Hemin",
+  #       ifelse(grepl("Glucose", df$Sample_Type), "Glucose", "No Media Type"))
+  #df$Strain <- sub("\\_.*", "", df$Sample_Type)
+  #df$Nisin_Concentration <- sub(".*\\_", "", df$Sample_Type)
+  return(df)
+}
+```
+
+
+```{r}
+doubling_time_all <- lapply(models.all, function(x) x$vals$t_gen)
+#making kable table
+doubling_time_all %>% 
+  unlist(recursive = FALSE) %>%
+  enframe() %>%
+  #filter(str_detect(name, "ERM") | str_detect(name, "Wt")) %>%
+  unnest() %>% rename(name='NH3 Concentration', value='Time (hrs)') %>%
+  kable(caption="Doubling Time (hrs)") %>% 
+  kable_styling(bootstrap_options = c("striped", "condensed"), full_width = F, font_size = 11) %>%
+  scroll_box(width = "100%", height = "500px")
+```
+
+Calculating time of midpoint in exponential phase for each strain in different media.
+```{r}
+## t_mid = halfway point of exponential phase?
+mid_time_all <- lapply(models.all, function(x) x$vals$t_mid)
+#making kable table
+mid_time_all %>% 
+  unlist(recursive = FALSE) %>% 
+  enframe() %>%
+  #filter(str_detect(name, "ERM") | str_detect(name, "Wt")) %>%
+  unnest() %>% rename(name='Media Type', value='Time (hrs)') %>%
+  kable(caption="Time (hrs) at Midpoint") %>% 
+  kable_styling(bootstrap_options = c("striped", "condensed"), full_width = F,font_size = 11) %>%
+  scroll_box(width = "100%", height = "500px")
+```
+
+Calculating growth rate for each strain in different media.
+```{r}
+## t_mid = halfway point of exponential phase?
+rate_all <- lapply(models.all, function(x) x$vals$r)
+#making kable table
+rate_all %>% 
+  unlist(recursive = FALSE) %>% 
+  enframe() %>%
+  #filter(str_detect(name, "ERM") | str_detect(name, "Wt")) %>%
+  unnest() %>% rename(name='Media Type', value='Time (hrs)') %>%
+  kable(caption="Time (hrs) at Midpoint") %>% 
+  kable_styling(bootstrap_options = c("striped", "condensed"), full_width = F,font_size = 11) %>%
+  scroll_box(width = "100%", height = "500px")
+```
+
+```{r}
+df1 <- make_df(doubling_time_all, "Doubling_Time")
+df2 <- make_df(mid_time_all, "Mid_Point")
+df3 <- make_df(rate_all, "Rate")
+df4 <- cbind(df1, df2$Mid_Point, df3$Rate)
+colnames(df4) <- c("NH3 Concentration", "Doubling Time", "Mid Point", "Rate")
+df4
+```
