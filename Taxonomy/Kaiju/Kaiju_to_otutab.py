@@ -13,7 +13,6 @@ import glob,os
 import pandas as pd
 import re
 import csv
-#import feather
 import sys
 import numpy as np
 from argparse import ArgumentParser
@@ -45,11 +44,12 @@ def clean_kaiju():
           line = re.sub('\t[0-9]', '', line)#cut tab at the beginnning
           line = re.sub(';', '\t', line)#cut tab at the beginnning
           outfile.write(line)
+  print("Yay, we are all cleaned up and now on to making the taxa table.")
 
 def tax_table():
   Kaiju_files = glob.glob("*_kaiju-names_out.tsv") #files with extention that will be looped through code
   #Kaiju_files = glob.glob("*"+args.filename) #files with extention that will be looped through code
-  taxa_col = ("Organism\tKingdom\tGroup\tPhylum\tClass\tOrder\tFamily\tGenus\tSpecies")
+  taxa_col = ("Kingdom\tPhylum\tClass\tOrder\tFamily\tGenus\tSpecies\tStrain")
   with open("tax_table.txt", 'w') as new:
     new.write(taxa_col)
     new.write("\n")
@@ -59,15 +59,23 @@ def tax_table():
     with open("temp_file.txt","r") as infile, open("tax_table.txt", 'a') as outfile, open("Fungi_taxa.txt", 'a') as outfileFungi:
       for line in infile:
         line = re.sub('^[0-9]+\t', '', line)#cut numbers at beginning
-        line = re.sub('Proteobacteria\t',"Proteobacteria: ", line) #fix so protiobacteria stays in phylum column
+        line = re.sub('Proteobacteria\tdelta/epsilon subdivisions',"Proteobacteria: delta/epsilon subdivisions", line) #fix so proteobacteria stays in phylum column
+        #line = re.sub("Chlamydia/Chlamydophila group\t", "", line) #remove to keep taxonomy correct
+        line = re.sub("Bacteroidetes/Chlorobi group\t", "", line) #remove to keep taxonomy correct
+        line = re.sub("environmental samples\t", "", line) #remove to keep taxonomy correct
+        line = re.sub("cellular organisms\t", "", line) #remove to keep file size smaller
+        line = re.sub("Terrabacteria group\t", "", line) #remove to keep taxonomy correct
+        line = re.sub("PVC group\t", "", line) #remove to keep file size smaller
+        line = re.sub("FCB group\t", "", line) #remove to keep taxonomy correct
+        line = re.sub("cellular organisms\t", "", line) #remove to keep file size smaller
         n = line.count("\t")
         n_start = line.count("\t")
-        if n <= 8:
+        if n <= 7:
           line = line.strip()
-        while n < 8:
+        while n < 7:
           line += "\tNA"
           n = line.count("\t")
-        if n >= 8:
+        if n >= 7:
           line = line.strip() + "\n"# get rid of trailing tabs
         if "Fungi" in line: #Fungi have a different number of columns so just setting them aside.
             outfileFungi.write(line)
@@ -82,12 +90,12 @@ def tax_table():
   df = df.drop('RN',1)
   df.to_csv('tax_table.txt', sep='\t',index=True, header=True, quotechar='"', quoting=csv.QUOTE_NONNUMERIC) #write DataFrame to comma separated file (.csv) with file name and FOAM hmm counts
   #df.write_dataframe(df, "tax_table.feather")
+  print("Hey, this is exciting this is the end of making the tax_table")
 
 def otu_table():
   Kaiju_files = glob.glob("*_kaiju-names_out.tsv") #files with extention that will be looped through code
   #Kaiju_files = glob.glob("*"+args.filename) #files with extention that will be looped through code
-  print(Kaiju_files)
-  otu_col = ("Sample\tReads\tOrganism\tKingdom\tGroup\tPhylum\tClass\tOrder\tFamily\tGenus\tSpecies")
+  otu_col = ("Sample\tReads\tKingdom\tPhylum\tClass\tOrder\tFamily\tGenus\tSpecies\tStrain")
   with open("otu_table_first.txt", 'w') as new:
     new.write(otu_col)
     new.write("\n")
@@ -98,6 +106,15 @@ def otu_table():
     with open("temp_file.txt","r") as infile, open("otu_table_first.txt", 'a') as outfile, open("Fungi_taxa.txt", 'a') as outfileFungi:
       for line in infile:
         line = sam_name + "\t" + line
+        line = re.sub('Proteobacteria\tdelta/epsilon subdivisions',"Proteobacteria: delta/epsilon subdivisions", line) #fix so proteobacteria stays in phylum column
+        #line = re.sub("Chlamydia/Chlamydophila group\t", "", line) #remove to keep taxonomy correct
+        line = re.sub("Bacteroidetes/Chlorobi group\t", "", line) #remove to keep taxonomy correct
+        line = re.sub("environmental samples\t", "", line) #remove to keep taxonomy correct
+        line = re.sub("cellular organisms\t", "", line) #remove to keep file size smaller
+        line = re.sub("Terrabacteria group\t", "", line) #remove to keep taxonomy correct
+        line = re.sub("PVC group\t", "", line) #remove to keep file size smaller
+        line = re.sub("FCB group\t", "", line) #remove to keep taxonomy correct
+        line = re.sub("cellular organisms\t", "", line) #remove to keep file size smaller
         n = line.count("\t")
         n_start = line.count("\t")
         if n <= 9:
@@ -113,7 +130,7 @@ def otu_table():
             outfile.write(line)
   df = pd.read_csv("otu_table_first.txt", header=0, sep='\t')
   df_taxa = pd.read_csv("tax_table_RN.txt", header=0, sep='\t')
-  df_merge = pd.merge(df, df_taxa, how='inner', on=['Organism','Kingdom','Group','Phylum','Class','Order','Family','Genus','Species'])
+  df_merge = pd.merge(df, df_taxa, how='inner', on=['Kingdom','Group','Phylum','Class','Order','Family','Genus','Species','Strain'])
   df_merge.to_csv('check.txt', sep='\t',index=True)
   df_merge = df_merge.drop_duplicates(keep='first')
   df_otu = df_merge[['Sample', 'Reads','RN']]
