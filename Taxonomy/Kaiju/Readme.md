@@ -77,3 +77,4 @@ optional arguments:
                         Input directory name were .summary files are found
                         (required)
 ```
+Script `Kaiju_to_otutab.py` was written to parse the output of `kaiju-addTaxonNames` into a tax_tab.txt and otu_tab.txt that can be read into R to create a phyloseq object. For some reason I haven't sorted out yet it isn't running at as an executable, but will run by line. Shoot me an email if you want some explaination or it fixed for your own purposes.
