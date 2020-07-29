@@ -1,8 +1,8 @@
 Currently, the arguments accepted for `Anvi_table_parser.py` are:
 
 ```
-usage: Identify_Nif_Taxonomy.py [-h] [-t TAXALEVEL] [-l FOAMLEVEL]
-                                [--print-contigs] [--find-nifHDK-in-contigs]
+usage: Anvi_table_parser.py [-h] [-t TAXALEVEL] [-l FOAMLEVEL]
+                  Identify_Nif_Taxonom              [--print-contigs] [--find-nifHDK-in-contigs]
                                 [-st SPECIFICTAXA] -i INDIRNAME [-o OUTFILE]
                                 [-g GENE] -s SOURCE
 
@@ -78,4 +78,23 @@ optional arguments:
   --get-gene-contigs    Get contigs containing gene(s) of choice to text file.
  ```
 
+To get the taxa for a particular gene call use the `anvi-get-taxonomy-for-genecall.py`
 
+
+```
+usage: anvi-get-taxonomy-for-genecall.py [-h] [-t TAXALEVEL] [--print-gene] -i INDIRNAME [-o OUTFILE] [-g GENE]
+
+Parses anvi-export-table --table files
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -t TAXALEVEL, --taxa-level TAXALEVEL
+                        Pick taxa level you want reported
+  --print-gene          Print contigs with your choose combination of source and gene call(s).
+  -i INDIRNAME, --indir INDIRNAME
+                        Input directory name were taxon_names, genes_taxonomy and hmm_hits .txt files are found (required)
+  -o OUTFILE, -outfile OUTFILE
+                        Name of file to write output too.
+  -g GENE, --gene-call GENE
+                        Name of gene to search in dataframe for. You can pass multiple genes by separating them by a pipe. Ex: 'geneA|geneB'
+```
