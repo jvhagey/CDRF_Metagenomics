@@ -1,3 +1,5 @@
+## For the nifH genes found in the same contig with nifD and nifK
+
 Here we want to get the gene call Ids to be able to pull the fasta files for each genne call from the Anvio'd database. To get gene call IDs is a bit of an "easter egg" run the following command `python run_all_works2.py -i ./ -g "nifK|COG2710|nifD" -t family -o test.txt`. You will be prompted with questions and you will need to answer `contigs`, `no` and `per gene`. This part of the script isn't set up to get a particular set of genes yet :(. This will create a bunch of files that have gene calls for each gene. For example, the nifH file will have gene calls IDs for genes that were identified as nifH by COGs, TIGRFAM HMMs, FOAM HMMs and GhoastKOALA. 
 
 Next we will get a fasta file of all the gene calls in the Anvi'o database.
@@ -70,3 +72,7 @@ This assigned the sequences to the following clusters/subclusters:
 >264012 | Prevotella bryantii main cluster = 3 subcluster = 3I
 >1299485 | Unknown_Methanobrevibacter main cluster = 4 subcluster = 4B
 >1401422 | Unknown_Methanobrevibacter main cluster = 4 subcluster = 4B
+
+
+## For the nifH genes found in a contig with no other nif genes
+
