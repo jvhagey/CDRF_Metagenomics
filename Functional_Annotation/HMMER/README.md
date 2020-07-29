@@ -125,4 +125,11 @@ do
 sbatch $fname.Mcencus.sh
 done
 ```
-The results for forward reads are found in FwdReads_MicrobeCensus_Results.txt  
+The results for forward reads are found in FwdReads_MicrobeCensus_Results.txt 
+
+To get counts of these genes that can be read into R run the follow:
+
+```
+ python FOAM_hmmscan_to_GeneCount.py -i ./ -r Merged_Results.txt --recA GeneCountOutput_Nitro.csv -s Merge_Stats.txt
+```
+This produces `GeneCountOutput_Foam_Nitro.csv` that contains the information for graphing. 
