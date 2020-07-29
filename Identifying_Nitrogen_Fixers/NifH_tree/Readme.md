@@ -1,6 +1,6 @@
+Here we want to get the gene call Ids to be able to pull the fasta files for each genne call from the Anvio'd database. To get gene call IDs is a bit of an "easter egg" run the following command `python run_all_works2.py -i ./ -g "nifK|COG2710|nifD" -t family -o test.txt`. You will be prompted with questions and you will need to answer `contigs`, `no` and `per gene`. This part of the script isn't set up to get a particular set of genes yet :(. This will create a bunch of files that have gene calls for each gene. For example, the nifH file will have gene calls IDs for genes that were identified as nifH by COGs, TIGRFAM HMMs, FOAM HMMs and GhoastKOALA. 
 
-
-The fasta file for gene calls for each gene in the text file were extracted from the file of all gene calls from the anivo database. 
+The fasta files for gene calls IDs for each gene in the text file were extracted from the file of all gene calls from the anivo database. 
 
 ```
 #!/bin/bash
