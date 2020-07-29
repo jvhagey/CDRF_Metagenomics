@@ -63,3 +63,10 @@ python anvi-get-taxonomy-for-genecall.py -i ./ -g "1401422" -t species
 
 ```
 I added these manually to the fasta file.
+
+This assigned the sequences to the following clusters/subclusters:
+
+>139447 | Lachnospiraceae bacterium XPB1003 main cluster = 3 subcluster = 3I
+>264012 | Prevotella bryantii main cluster = 3 subcluster = 3I
+>1299485 | Unknown_Methanobrevibacter main cluster = 4 subcluster = 4B
+>1401422 | Unknown_Methanobrevibacter main cluster = 4 subcluster = 4B
