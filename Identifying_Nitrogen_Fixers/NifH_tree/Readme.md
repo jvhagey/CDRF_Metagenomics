@@ -40,7 +40,7 @@ time anvi-get-sequences-for-gene-calls -c fixed.contigsV5.5.db --gene-caller-ids
 Now that we have sequences we will align them to a reference dataset of prealigned nifH sequences from the [the Zehr Lab](https://www.jzehrlab.com/nifh) that are in the file `CART_Test_Atlantic.fasta`. You will need to follow the CART button to get to this file. Not that to my gene call file, I added a couple sequences as positive controls to make sure the script worked correctly.
 
 ```
-module load mafft/7.453
+source activate MAFFT
 
 mafft --add nifH_AA_genecalls_notaligned.fasta --reorder CART_Test_Atlantic.fasta > Atlantic_withMyNifSeqs.fasta
 ```
@@ -49,5 +49,17 @@ mafft --add nifH_AA_genecalls_notaligned.fasta --reorder CART_Test_Atlantic.fast
 The script is descripted in [Frank et al. 2016](https://sfamjournals.onlinelibrary.wiley.com/doi/full/10.1111/1758-2229.12455)
 
 ```
-python NifH_Clusters.py Atlantic_withMyNifSeqs.fasta 45
+python NifH_Clusters.py Atlantic_withMyNifSeqs 45
 ```
+
+To get the taxonomy of these gene calls run the following. 
+
+```
+
+python anvi-get-taxonomy-for-genecall.py -i ./ -g "139447" -t species
+python anvi-get-taxonomy-for-genecall.py -i ./ -g "264012" -t species
+python anvi-get-taxonomy-for-genecall.py -i ./ -g "1299485" -t species
+python anvi-get-taxonomy-for-genecall.py -i ./ -g "1401422" -t species
+
+```
+I added these manually to the fasta file.
