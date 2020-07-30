@@ -1,0 +1,334 @@
+#This is the output of python run_all_works2.py -i ./ -g "nifH" -t families -o genus_with_nifH.txt
+
+The taxa with nifH that were found in common between custom TigrFams and foam_hmms:
+['Atopobiaceae', 'Tissierellaceae', 'Hungateiclostridiaceae', 'Peptococcaceae', 'Peptostreptococcaceae', 'Selenomonadaceae', 'Lactobacillaceae', 'Methanocorpusculaceae', 'Unknown_Acidobacteria', 'Unknown_Bacteria', 'Acidaminococcaceae', 'Hymenobacteraceae', 'Unknown_candidate_division_Zixibacteria', 'Lachnospiraceae', 'Erysipelotrichaceae', 'Prevotellaceae', 'Veillonellaceae', 'Clostridiaceae', 'Spirochaetaceae', 'Unknown_Methanococci', 'Ruminococcaceae', 'Bacteroidaceae', 'Methanobacteriaceae', 'Candidatus Brocadiaceae', 'Unknown_Tissierellia', 'Methanoregulaceae', 'Unknown_Alphaproteobacteria', 'Leptospiraceae', 'Methanomassiliicoccaceae', 'Eubacteriaceae', 'Thermoanaerobacterales Family III. Incertae Sedis', 'Unknown_Clostridia', 'Unknown_Firmicutes', 'Oscillospiraceae', 'Thermoanaerobacteraceae', 'Unknown_Negativicutes', 'Succinivibrionaceae', 'Methanomicrobiaceae', 'Sporomusaceae', 'Clostridiales Family XIII. Incertae Sedis']
+
+The taxa with nifH that were found in common between GK and Cogs:
+['Atopobiaceae', 'Hungateiclostridiaceae', 'Peptococcaceae', 'Peptostreptococcaceae', 'Selenomonadaceae', 'Lactobacillaceae', 'Methanocorpusculaceae', 'Unknown_Bacteria', 'Lachnospiraceae', 'Erysipelotrichaceae', 'Prevotellaceae', 'Veillonellaceae', 'Clostridiaceae', 'Spirochaetaceae', 'Unknown_Methanococci', 'Ruminococcaceae', 'Methanobacteriaceae', 'Unknown_Tissierellia', 'Eubacteriaceae', 'Unknown_Clostridia', 'Unknown_Firmicutes', 'Clostridiales Family XIII. Incertae Sedis']
+
+The taxa with nifH that were found in common will all three methods are:
+['Atopobiaceae', 'Hungateiclostridiaceae', 'Peptococcaceae', 'Peptostreptococcaceae', 'Selenomonadaceae', 'Lactobacillaceae', 'Methanocorpusculaceae', 'Unknown_Bacteria', 'Lachnospiraceae', 'Erysipelotrichaceae', 'Prevotellaceae', 'Veillonellaceae', 'Clostridiaceae', 'Spirochaetaceae', 'Unknown_Methanococci', 'Ruminococcaceae', 'Methanobacteriaceae', 'Unknown_Tissierellia', 'Eubacteriaceae', 'Unknown_Clostridia', 'Unknown_Firmicutes', 'Clostridiales Family XIII. Incertae Sedis']
+
+Quick Question:
+Do you want to print the contigs (yes/no)?y
+
+Cool we just printed your contigs to the file families_with_nifH.txt
+
+Quick Question:
+Do you want to counts of taxa containing your gene (yes/no)?y
+
+The family that have nifH based on custom nif Hmms:
+
+Clostridiaceae         45
+Lachnospiraceae        36
+Methanobacteriaceae    27
+Unknown_Clostridia     23
+Eubacteriaceae         22
+Unknown_Bacteria       21
+Ruminococcaceae        12
+Unknown_Firmicutes     12
+Name: t_family, dtype: int64
+
+The family that have nifH based on Cogs:
+
+Clostridiaceae           35
+Methanobacteriaceae      26
+Eubacteriaceae           18
+Lachnospiraceae          15
+Unknown_Bacteria         13
+Unknown_Clostridia       13
+Ruminococcaceae          12
+Peptostreptococcaceae     5
+Name: t_family, dtype: int64
+
+The family that have nifH based on GhoatKOALA:
+
+Clostridiaceae         34
+Eubacteriaceae         16
+Methanobacteriaceae    15
+Lachnospiraceae        13
+Unknown_Bacteria       13
+Unknown_Clostridia     12
+Ruminococcaceae        10
+Veillonellaceae         5
+Name: t_family, dtype: int64
+
+The family that have nifH based on Foam Hmms:
+
+Clostridiaceae         51
+Lachnospiraceae        42
+Unknown_Clostridia     28
+Methanobacteriaceae    26
+Eubacteriaceae         22
+Unknown_Firmicutes     22
+Unknown_Bacteria       21
+Ruminococcaceae        16
+Name: t_family, dtype: int64
+
+The family that have nifH common to all 4 methods:
+
+                                       Family  Counts
+0                              Clostridiaceae      51
+1                             Lachnospiraceae      42
+2                          Unknown_Clostridia      28
+3                         Methanobacteriaceae      26
+4                              Eubacteriaceae      22
+5                          Unknown_Firmicutes      22
+6                            Unknown_Bacteria      21
+7                             Ruminococcaceae      16
+8                         Erysipelotrichaceae       8
+9                       Peptostreptococcaceae       6
+10                           Lactobacillaceae       6
+12  Clostridiales Family XIII. Incertae Sedis       5
+13                            Spirochaetaceae       4
+15                           Selenomonadaceae       4
+17                            Veillonellaceae       4
+19                     Hungateiclostridiaceae       2
+22                       Unknown_Methanococci       2
+23                             Prevotellaceae       2
+25                               Atopobiaceae       1
+29                             Peptococcaceae       1
+36                      Methanocorpusculaceae       1
+46                       Unknown_Tissierellia       1
+
+#Here is the output of python run_all_works2.py -i ./ -g "nifH" -t genus -o genus_with_nifH.txt
+
+The taxa with nifH that were found in common between custom TigrFams and foam_hmms:
+['Unknown_Ruminococcaceae', 'Mobilibacterium', 'Phascolarctobacterium', 'Desulfitobacterium', 'Faecalibacterium', 'Unknown_Erysipelotrichaceae', 'Unknown_Lachnospiraceae', 'Methanomassiliicoccus', 'Methanoculleus', 'Caldanaerobacter', 'Oscillibacter', 'Romboutsia', 'Bacteroides', 'Megasphaera', 'Caldicellulosiruptor', 'Lactobacillus', 'Anaerorhabdus', 'Pseudoramibacter', 'Blautia', 'Muricomes', 'Sharpea', 'Leptospira', 'Mitsuokella', 'Methanosphaera', 'Butyrivibrio', 'Unknown_Clostridiaceae', 'Treponema', 'Anaerosalibacter', 'Tepidimicrobium', 'Unknown_Acidobacteria', 'Anaerocolumna', 'Sarcina', 'Stomatobaculum', 'Roseburia', 'Unknown_Clostridia', 'Ruminiclostridium', 'Cellulosilyticum', 'Olsenella', 'Methanolinea', 'Clostridium', 'Methanobrevibacter', 'Unknown_Methanococci', 'Eubacterium', 'Robinsoniella', 'Ruminococcus', 'Unknown_Firmicutes', 'Pontibacter', 'Unknown_Alphaproteobacteria', 'Aminipila', 'Coprococcus', 'Methanocorpusculum', 'Unknown_Bacteria', 'Unknown_Eubacteriaceae', 'Candidatus Jettenia', 'Lachnoclostridium', 'Tindallia', 'Turicibacter', 'Dorea', 'Unknown_candidate_division_Zixibacteria', 'Sporomusa', 'Prevotella', 'Unknown_Negativicutes']
+
+The taxa with nifH that were found in common between GK and Cogs:
+['Unknown_Ruminococcaceae', 'Mobilibacterium', 'Desulfitobacterium', 'Unknown_Erysipelotrichaceae', 'Unknown_Lachnospiraceae', 'Romboutsia', 'Megasphaera', 'Lactobacillus', 'Pseudoramibacter', 'Blautia', 'Sharpea', 'Mitsuokella', 'Methanosphaera', 'Butyrivibrio', 'Unknown_Veillonellaceae', 'Treponema', 'Tepidimicrobium', 'Sarcina', 'Stomatobaculum', 'Unknown_Clostridia', 'Ruminiclostridium', 'Cellulosilyticum', 'Olsenella', 'Clostridium', 'Methanobrevibacter', 'Unknown_Methanococci', 'Eubacterium', 'Ruminococcus', 'Unknown_Firmicutes', 'Methanocorpusculum', 'Coprococcus', 'Tindallia', 'Unknown_Bacteria', 'Unknown_Eubacteriaceae', 'Turicibacter', 'Dorea', 'Prevotella']
+
+The taxa with nifH that were found in common will all three methods are:
+['Unknown_Ruminococcaceae', 'Mobilibacterium', 'Desulfitobacterium', 'Unknown_Erysipelotrichaceae', 'Unknown_Lachnospiraceae', 'Romboutsia', 'Megasphaera', 'Lactobacillus', 'Pseudoramibacter', 'Blautia', 'Sharpea', 'Mitsuokella', 'Methanosphaera', 'Butyrivibrio', 'Treponema', 'Tepidimicrobium', 'Sarcina', 'Stomatobaculum', 'Unknown_Clostridia', 'Ruminiclostridium', 'Cellulosilyticum', 'Olsenella', 'Clostridium', 'Methanobrevibacter', 'Unknown_Methanococci', 'Eubacterium', 'Ruminococcus', 'Unknown_Firmicutes', 'Methanocorpusculum', 'Coprococcus', 'Tindallia', 'Unknown_Bacteria', 'Unknown_Eubacteriaceae', 'Turicibacter', 'Dorea', 'Prevotella']
+
+Quick Question:
+Do you want to print the contigs (yes/no)?y
+
+Cool we just printed your contigs to the file genus_with_nifH.txt
+
+Quick Question:
+Do you want to counts of taxa containing your gene (yes/no)?y
+
+The genus that have nifH based on custom nif Hmms:
+
+Sarcina                    24
+Unknown_Clostridia         23
+Unknown_Bacteria           21
+Methanobrevibacter         20
+Clostridium                19
+Unknown_Firmicutes         12
+Unknown_Eubacteriaceae     10
+Unknown_Lachnospiraceae    10
+Name: t_genus, dtype: int64
+
+The genus that have nifH based on Cogs:
+
+Sarcina                    21
+Methanobrevibacter         21
+Unknown_Clostridia         13
+Clostridium                13
+Unknown_Bacteria           13
+Unknown_Eubacteriaceae     11
+Ruminococcus                9
+Unknown_Lachnospiraceae     7
+Name: t_genus, dtype: int64
+
+The genus that have nifH based on GhoatKOALA:
+
+Sarcina                    20
+Unknown_Bacteria           13
+Clostridium                13
+Unknown_Clostridia         12
+Methanobrevibacter         12
+Unknown_Eubacteriaceae     10
+Ruminococcus                8
+Unknown_Lachnospiraceae     6
+Name: t_genus, dtype: int64
+
+The genus that have nifH based on Foam Hmms:
+
+Unknown_Clostridia         28
+Sarcina                    27
+Clostridium                22
+Unknown_Firmicutes         22
+Unknown_Bacteria           21
+Methanobrevibacter         19
+Unknown_Lachnospiraceae    13
+Eubacterium                10
+Name: t_genus, dtype: int64
+
+The genus that have nifH common to all 4 methods:
+
+                                                Genus  Counts
+0                                  Unknown_Clostridia      28
+1                                             Sarcina      27
+2                                         Clostridium      22
+3                                  Unknown_Firmicutes      22
+4                                    Unknown_Bacteria      21
+5                                  Methanobrevibacter      19
+6                             Unknown_Lachnospiraceae      13
+7                                         Eubacterium      10
+8                              Unknown_Eubacteriaceae      10
+9                                        Ruminococcus       9
+10                                     Methanosphaera       7
+11                                         Romboutsia       6
+12                                       Butyrivibrio       5
+13                                            Blautia       4
+14                                          Treponema       4
+15                        Unknown_Erysipelotrichaceae       4
+18                                       Turicibacter       4
+19                            Unknown_Ruminococcaceae       4
+21                                   Cellulosilyticum       3
+23                                        Megasphaera       3
+24                                        Coprococcus       3
+25                                            Sharpea       3
+26                                      Lactobacillus       3
+27                                              Dorea       3
+31  Unknown_Clostridiales_Family_XIII._Incertae_Sedis       2
+34                                        Mitsuokella       2
+36                                         Prevotella       2
+37                                   Pseudoramibacter       2
+38                               Unknown_Methanococci       2
+44                                 Methanocorpusculum       1
+46                                 Desulfitobacterium       1
+48                                    Mobilibacterium       1
+63                                          Olsenella       1
+65                                     Stomatobaculum       1
+66                                  Ruminiclostridium       1
+74                                    Tepidimicrobium       1
+77                             Unknown_Clostridiaceae       1
+78                                          Tindallia       1
+
+# Lastly here is the output of python run_all_works2.py -i ./ -g "nifH" -t species -o species_with_nifH.txt
+
+
+The taxa with nifH that were found in common between custom TigrFams and foam_hmms:
+['Unknown_Methanobrevibacter', 'Unknown_Tindallia', 'Firmicutes bacterium CAG:536', 'Unknown_Romboutsia', 'Prevotella bryantii', 'Unknown_Sporomusa', 'Lactobacillus rennini', 'Methanosphaera cuniculi', 'Unknown_Coprococcus', 'Unknown_Blautia', 'Ruminococcaceae bacterium CPB6', 'Blautia obeum', 'Anaerocolumna xylanovorans', 'Ruminiclostridium hungatei', 'Clostridiales bacterium CHKCI006', 'uncultured Eubacterium sp.', 'Firmicutes bacterium CAG:238', 'Erysipelotrichaceae bacterium NK3D112', 'Unknown_Robinsoniella', 'Methanobrevibacter ruminantium', 'Alphaproteobacteria bacterium', 'bacterium 1xD42-87', 'Tepidimicrobium xylanilyticum', 'Unknown_Bacteria', 'Unknown_Negativicutes', 'Clostridium sp. SN20', 'Unknown_Leptospira', 'Unknown_Methanocorpusculum', 'Mobilibacterium timonense', 'Lachnospiraceae bacterium', 'Turicibacter sanguinis', 'Methanomassiliicoccus luminyensis', 'Treponema saccharophilum', '[Clostridium] fimetarium', 'Acidobacteria bacterium', 'Eubacterium sp. AB3007', 'Clostridiales bacterium', 'Romboutsia timonensis', 'Blautia schinkii', 'uncultured Clostridium sp.', 'Methanobrevibacter thaueri', 'Unknown_Bacteroides', 'Unknown_Megasphaera', 'Olsenella sp. SIT9', 'bacterium 1XD42-54', 'Unknown_Firmicutes', 'Methanobrevibacter olleyae', 'Ruminococcus sp. FC2018', 'Treponema brennaborense', 'Firmicutes bacterium CAG:170', 'Clostridium luticellarii', 'Clostridium sp. CAG:524', 'Candidatus Jettenia ecosi', 'Lachnospiraceae bacterium XPB1003', 'Dorea sp. Marseille-P4003', 'Unknown_Methanococci', 'Anaerorhabdus furcosa', 'Aminipila sp. JN-39', 'Erysipelotrichaceae bacterium SG0102', 'Lachnoclostridium sp. Marseille-P6806', 'Sarcina sp. DSM 11001', 'Caldanaerobacter subterraneus', 'Eubacteriaceae bacterium', 'Eubacterium ventriosum', 'Eubacterium sp. An11', 'Ruminococcus albus', 'Pseudoramibacter alactolyticus', 'Unknown_Dorea', 'Methanosphaera sp. BMS', 'Eubacterium uniforme', 'Unknown_Ruminococcus', 'Methanobrevibacter millerae', 'Methanosphaera sp. rholeuAM6', 'Methanolinea sp. SDB', 'Anaerosalibacter sp. Marseille-P3206', 'Unknown_Faecalibacterium', 'Unknown_Clostridia', 'Unknown_Lachnospiraceae', 'Oscillibacter sp. PC13', '[Eubacterium] cellulosolvens', 'Firmicutes bacterium CAG:646', 'Clostridium sp. SY8519', 'Unknown_Butyrivibrio', 'Muricomes intestini', 'Unknown_Eubacteriaceae', 'bacterium C-53', 'Methanobrevibacter sp. YE315', 'Bacteroides ihuae', 'Bacteroides reticulotermitis', 'Methanosphaera sp. SHI613', 'Lachnospiraceae bacterium MA2020', 'uncultured bacterium', 'Unknown_Clostridium', 'Unknown_Mitsuokella', 'Unknown_candidate_division_Zixibacteria', 'Treponema socranskii', 'Roseburia hominis', 'Sharpea azabuensis', 'Unknown_Ruminococcaceae', 'Cellulosilyticum sp. I15G10I2', 'Clostridiaceae bacterium OM08-6BH', 'Pontibacter diazotrophicus', 'Romboutsia lituseburensis', 'Cellulosilyticum lentocellum', 'Unknown_Desulfitobacterium', 'Roseburia sp. 831b', 'Butyrivibrio sp. XPD2006', 'Stomatobaculum longum', 'Phascolarctobacterium succinatutens', 'Unknown_Lachnoclostridium', 'Unknown_Caldicellulosiruptor', 'Methanoculleus thermophilus']
+
+The taxa with nifH that were found in common between GK and Cogs:
+['Lachnospiraceae bacterium', 'Unknown_Eubacteriaceae', 'Methanobrevibacter sp. YE315', 'Mobilibacterium timonense', 'Unknown_Methanococci', 'Unknown_Methanobrevibacter', 'Turicibacter sanguinis', 'Methanosphaera sp. SHI613', 'Unknown_Veillonellaceae', 'Unknown_Tindallia', 'Firmicutes bacterium CAG:536', 'Treponema saccharophilum', 'Unknown_Romboutsia', 'Clostridiales bacterium', 'Erysipelotrichaceae bacterium SG0102', 'Lachnospiraceae bacterium MA2020', 'uncultured bacterium', 'Unknown_Clostridium', 'Prevotella bryantii', 'Lactobacillus rennini', 'Unknown_Coprococcus', 'Unknown_Mitsuokella', 'Sarcina sp. DSM 11001', 'Ruminococcaceae bacterium CPB6', 'Treponema socranskii', 'Eubacteriaceae bacterium', 'Blautia obeum', 'Ruminiclostridium hungatei', 'Sharpea azabuensis', 'Eubacterium sp. An11', 'Methanobrevibacter thaueri', 'Ruminococcus albus', 'Pseudoramibacter alactolyticus', 'Unknown_Dorea', 'Methanosphaera sp. BMS', 'Methanobrevibacter ruminantium', 'Unknown_Ruminococcus', 'Unknown_Ruminococcaceae', 'Methanobrevibacter millerae', 'Eubacterium uniforme', 'Methanosphaera sp. rholeuAM6', 'Unknown_Megasphaera', 'Olsenella sp. SIT9', 'Tepidimicrobium xylanilyticum', 'Romboutsia lituseburensis', 'Cellulosilyticum lentocellum', 'Unknown_Desulfitobacterium', 'Unknown_Firmicutes', 'Unknown_Clostridia', 'Methanobrevibacter olleyae', 'Unknown_Bacteria', 'Unknown_Lachnospiraceae', 'Treponema brennaborense', 'Ruminococcus sp. FC2018', 'Clostridium luticellarii', 'Butyrivibrio sp. XPD2006', 'Clostridium sp. SY8519', 'Stomatobaculum longum', 'Unknown_Methanocorpusculum', 'Lachnospiraceae bacterium XPB1003']
+
+The taxa with nifH that were found in common will all three methods are:
+['Lachnospiraceae bacterium', 'Unknown_Eubacteriaceae', 'Methanobrevibacter sp. YE315', 'Unknown_Methanococci', 'Unknown_Methanobrevibacter', 'Turicibacter sanguinis', 'Methanosphaera sp. SHI613', 'Unknown_Tindallia', 'Firmicutes bacterium CAG:536', 'Treponema saccharophilum', 'Unknown_Romboutsia', 'Clostridiales bacterium', 'Erysipelotrichaceae bacterium SG0102', 'Lachnospiraceae bacterium MA2020', 'uncultured bacterium', 'Unknown_Clostridium', 'Prevotella bryantii', 'Lactobacillus rennini', 'Unknown_Coprococcus', 'Unknown_Mitsuokella', 'Sarcina sp. DSM 11001', 'Ruminococcaceae bacterium CPB6', 'Treponema socranskii', 'Eubacteriaceae bacterium', 'Blautia obeum', 'Ruminiclostridium hungatei', 'Sharpea azabuensis', 'Eubacterium sp. An11', 'Methanobrevibacter thaueri', 'Ruminococcus albus', 'Pseudoramibacter alactolyticus', 'Unknown_Dorea', 'Methanosphaera sp. BMS', 'Methanobrevibacter ruminantium', 'Unknown_Ruminococcus', 'Unknown_Ruminococcaceae', 'Methanobrevibacter millerae', 'Eubacterium uniforme', 'Methanosphaera sp. rholeuAM6', 'Unknown_Megasphaera', 'Olsenella sp. SIT9', 'Unknown_Methanocorpusculum', 'Tepidimicrobium xylanilyticum', 'Romboutsia lituseburensis', 'Cellulosilyticum lentocellum', 'Unknown_Desulfitobacterium', 'Unknown_Firmicutes', 'Unknown_Clostridia', 'Methanobrevibacter olleyae', 'Unknown_Bacteria', 'Unknown_Lachnospiraceae', 'Treponema brennaborense', 'Ruminococcus sp. FC2018', 'Clostridium luticellarii', 'Butyrivibrio sp. XPD2006', 'Clostridium sp. SY8519', 'Stomatobaculum longum', 'Mobilibacterium timonense', 'Lachnospiraceae bacterium XPB1003']
+
+Quick Question:
+Do you want to print the contigs (yes/no)?y
+
+Cool we just printed your contigs to the file species_with_nifH.txt
+
+Quick Question:
+Do you want to counts of taxa containing your gene (yes/no)?y
+
+The species that have nifH based on custom nif Hmms:
+
+Sarcina sp. DSM 11001      24
+Unknown_Clostridia         16
+Unknown_Clostridium        13
+uncultured bacterium       12
+Unknown_Eubacteriaceae      9
+Unknown_Firmicutes          8
+Unknown_Lachnospiraceae     6
+Clostridiales bacterium     6
+Name: t_species, dtype: int64
+
+The species that have nifH based on Cogs:
+
+Sarcina sp. DSM 11001           21
+uncultured bacterium            11
+Unknown_Clostridium             11
+Unknown_Eubacteriaceae          10
+Unknown_Clostridia               9
+Methanobrevibacter thaueri       6
+Eubacterium sp. An11             5
+Methanobrevibacter sp. YE315     5
+Name: t_species, dtype: int64
+
+The species that have nifH based on GhoatKOALA:
+
+Sarcina sp. DSM 11001      20
+Unknown_Clostridium        11
+uncultured bacterium       11
+Unknown_Eubacteriaceae      9
+Unknown_Clostridia          8
+Unknown_Megasphaera         4
+Ruminococcus sp. FC2018     4
+Eubacterium sp. An11        4
+Name: t_species, dtype: int64
+
+The species that have nifH based on Foam Hmms:
+
+Sarcina sp. DSM 11001      27
+Unknown_Clostridia         19
+Unknown_Clostridium        13
+Unknown_Firmicutes         12
+uncultured bacterium       12
+Unknown_Eubacteriaceae      9
+Clostridiales bacterium     8
+Unknown_Lachnospiraceae     8
+Name: t_species, dtype: int64
+
+The species that have nifH common to all 4 methods:
+
+                                  Species  Counts
+0                   Sarcina sp. DSM 11001      27
+1                      Unknown_Clostridia      19
+2                     Unknown_Clostridium      13
+3                      Unknown_Firmicutes      12
+4                    uncultured bacterium      12
+5                  Unknown_Eubacteriaceae       9
+6                 Clostridiales bacterium       8
+7                 Unknown_Lachnospiraceae       8
+8                        Unknown_Bacteria       6
+9              Methanobrevibacter thaueri       5
+10           Methanosphaera sp. rholeuAM6       4
+11                   Eubacterium sp. An11       4
+13           Methanobrevibacter sp. YE315       4
+14                Ruminococcus sp. FC2018       4
+15                     Sharpea azabuensis       3
+16            Methanobrevibacter millerae       3
+17              Romboutsia lituseburensis       3
+18                   Unknown_Ruminococcus       3
+20                 Turicibacter sanguinis       3
+21                  Lactobacillus rennini       3
+22                    Unknown_Megasphaera       3
+23         Methanobrevibacter ruminantium       3
+24                    Unknown_Coprococcus       3
+28                    Unknown_Mitsuokella       2
+32   Erysipelotrichaceae bacterium SG0102       2
+33         Ruminococcaceae bacterium CPB6       2
+34               Treponema saccharophilum       2
+35             Methanobrevibacter olleyae       2
+36                    Prevotella bryantii       2
+37      Lachnospiraceae bacterium XPB1003       2
+40                   Unknown_Methanococci       2
+41             Unknown_Methanobrevibacter       2
+45         Pseudoramibacter alactolyticus       2
+46                          Unknown_Dorea       2
+47                     Unknown_Romboutsia       2
+48               Butyrivibrio sp. XPD2006       2
+49                   Eubacterium uniforme       2
+51       Clostridiales bacterium CHKCI006       1
+57                          Blautia obeum       1
+58                     Ruminococcus albus       1
+70           Firmicutes bacterium CAG:536       1
+74                     Olsenella sp. SIT9       1
+75               Eubacteriaceae bacterium       1
+77               Clostridium luticellarii       1
+80           Cellulosilyticum lentocellum       1
+81         Lachnospiraceae bacterium 10-1       1
+85             Ruminiclostridium hungatei       1
+91          Tepidimicrobium xylanilyticum       1
+95                   Treponema socranskii       1
+102               Unknown_Ruminococcaceae       1
+107            Unknown_Desulfitobacterium       1
+108                     Unknown_Tindallia       1
+110               Treponema brennaborense       1
+112                 Stomatobaculum longum       1
+115      Lachnospiraceae bacterium MA2020       1
+118             Mobilibacterium timonense       1
+122                Methanosphaera sp. BMS       1
+126                Clostridium sp. SY8519       1
+133             Lachnospiraceae bacterium       1
+137             Methanosphaera sp. SHI613       1
+142            Unknown_Methanocorpusculum       1
