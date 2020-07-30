@@ -1,0 +1,78 @@
+This is the output of `python ../run_all_works2.py -i ./ -g "nifH|nifK|nifD|COG2710" -t family`
+
+```
+The family that have nifH|nifK|nifD|COG2710 based on custom nif Hmms:
+
+Lachnospiraceae        47
+Clostridiaceae         47
+Methanobacteriaceae    32
+Eubacteriaceae         26
+Unknown_Clostridia     23
+Unknown_Bacteria       21
+Ruminococcaceae        14
+Unknown_Firmicutes     13
+Name: t_family, dtype: int64
+
+The family that have nifH|nifK|nifD|COG2710 based on Cogs:
+
+Clostridiaceae           113
+Unknown_Clostridia        75
+Lachnospiraceae           52
+Eubacteriaceae            32
+Methanobacteriaceae       31
+Ruminococcaceae           24
+Atopobiaceae              14
+Peptostreptococcaceae     10
+Name: t_family, dtype: int64
+
+The family that have nifH|nifK|nifD|COG2710 based on GhoatKOALA:
+
+Clostridiaceae         34
+Eubacteriaceae         21
+Lachnospiraceae        20
+Methanobacteriaceae    19
+Ruminococcaceae        15
+Unknown_Bacteria       13
+Unknown_Clostridia     12
+Prevotellaceae          6
+Name: t_family, dtype: int64
+
+The family that have nifH|nifK|nifD|COG2710 based on Foam Hmms:
+
+Clostridiaceae           395
+Lachnospiraceae          353
+Methanobacteriaceae      304
+Eubacteriaceae           214
+Unknown_Clostridia       175
+Ruminococcaceae          155
+Erysipelotrichaceae      139
+Peptostreptococcaceae    106
+Name: t_family, dtype: int64
+
+The family that have nifH|nifK|nifD|COG2710 common to all 4 methods:
+
+                                       Family  Counts
+0                              Clostridiaceae     395
+1                             Lachnospiraceae     353
+2                         Methanobacteriaceae     304
+3                              Eubacteriaceae     214
+4                          Unknown_Clostridia     175
+5                             Ruminococcaceae     155
+6                         Erysipelotrichaceae     139
+7                       Peptostreptococcaceae     106
+8                              Prevotellaceae     103
+9                      Hungateiclostridiaceae      54
+10  Clostridiales Family XIII. Incertae Sedis      40
+11                         Unknown_Firmicutes      35
+12                               Atopobiaceae      30
+13                      Methanocorpusculaceae      29
+14                           Unknown_Bacteria      22
+16                           Endomicrobiaceae      17
+17                           Selenomonadaceae      17
+18                            Veillonellaceae      15
+19                           Lactobacillaceae      11
+21                            Spirochaetaceae       7
+23                             Peptococcaceae       5
+35                        Methanomicrobiaceae       1
+
+```
