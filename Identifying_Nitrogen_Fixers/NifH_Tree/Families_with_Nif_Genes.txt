@@ -1,5 +1,23 @@
 This is the output of python ../run_all_works2.py -i ./ -g "nifH|nifK|nifD|COG2710" -t family
 
+Quick Question:
+Do you want to contigs containing your gene or taxa with this gene (taxa/contigs)?T
+
+The taxa with nifH|nifK|nifD|COG2710 that were found in common between custom TigrFams and foam_hmms:
+['Ruminococcaceae', 'Peptococcaceae', 'Unknown_Firmicutes', 'Lactobacillaceae', 'Methanocorpusculaceae', 'Hungateiclostridiaceae', 'Unknown_Methanococci', 'Lachnospiraceae', 'Bacteroidaceae', 'Clostridiaceae', 'Unknown_candidate_division_Zixibacteria', 'Peptostreptococcaceae', 'Methanomicrobiaceae', 'Eubacteriaceae', 'Oscillospiraceae', 'Leptospiraceae', 'Unknown_Negativicutes', 'Thermoanaerobacteraceae', 'Unknown_Clostridia', 'Unknown_Acidobacteria', 'Unknown_Alphaproteobacteria', 'Endomicrobiaceae', 'Tissierellaceae', 'Erysipelotrichaceae', 'Spirochaetaceae', 'Selenomonadaceae', 'Candidatus Brocadiaceae', 'Acidaminococcaceae', 'Succinivibrionaceae', 'Unknown_Tissierellia', 'Methanobacteriaceae', 'Hymenobacteraceae', 'Clostridiales Family XIII. Incertae Sedis', 'Veillonellaceae', 'Sporomusaceae', 'Atopobiaceae', 'Prevotellaceae', 'Thermoanaerobacterales Family III. Incertae Sedis', 'Methanomassiliicoccaceae', 'Methanoregulaceae', 'Unknown_Bacteria']
+
+The taxa with nifH|nifK|nifD|COG2710 that were found in common between GK and Cogs:
+['Ruminococcaceae', 'Peptococcaceae', 'Unknown_Firmicutes', 'Lactobacillaceae', 'Methanocorpusculaceae', 'Hungateiclostridiaceae', 'Lachnospiraceae', 'Clostridiaceae', 'Peptostreptococcaceae', 'Methanomicrobiaceae', 'Eubacteriaceae', 'Unknown_Clostridia', 'Endomicrobiaceae', 'Erysipelotrichaceae', 'Spirochaetaceae', 'Selenomonadaceae', 'Methanobacteriaceae', 'Clostridiales Family XIII. Incertae Sedis', 'Veillonellaceae', 'Atopobiaceae', 'Prevotellaceae', 'Unknown_Bacteria']
+
+The taxa with nifH|nifK|nifD|COG2710 that were found in common will all three methods are:
+['Ruminococcaceae', 'Peptococcaceae', 'Unknown_Firmicutes', 'Lactobacillaceae', 'Methanocorpusculaceae', 'Hungateiclostridiaceae', 'Lachnospiraceae', 'Clostridiaceae', 'Peptostreptococcaceae', 'Methanomicrobiaceae', 'Eubacteriaceae', 'Unknown_Clostridia', 'Endomicrobiaceae', 'Erysipelotrichaceae', 'Spirochaetaceae', 'Selenomonadaceae', 'Methanobacteriaceae', 'Clostridiales Family XIII. Incertae Sedis', 'Veillonellaceae', 'Atopobiaceae', 'Prevotellaceae', 'Unknown_Bacteria']
+
+Quick Question:
+Do you want to print the contigs (yes/no)?N
+
+Quick Question:
+Do you want to counts of taxa containing your gene (yes/no)?Y
+
 The family that have nifH|nifK|nifD|COG2710 based on custom nif Hmms:
 
 Lachnospiraceae        47
