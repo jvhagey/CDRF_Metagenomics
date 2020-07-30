@@ -1,3 +1,6 @@
+## Identifying Taxa with nifHDK
+Run `python run_all_works2.py -i ./ -g "nifH|nifK|nifD|COG2710" -t family`. The output of this is found in the file `Families_with_Nif_Genes.txt`. For now we will look just for taxa with nifH `python run_all_works2.py -i ./ -g "nifH" -t family` and the output of this is found in `Families_with_nifH.txt`. Now we will move on to getting the gene calls for nifH and placing them on a tree. 
+
 ## For the nifH genes found in the same contig with nifD and nifK
 
 Here we want to get the gene call Ids to be able to pull the fasta files for each genne call from the Anvio'd database. To get gene call IDs is a bit of an "easter egg" run the following command `python run_all_works2.py -i ./ -g "nifK|COG2710|nifD" -t family -o test.txt`. You will be prompted with questions and you will need to answer `contigs`, `no` and `per gene`. This part of the script isn't set up to get a particular set of genes yet :(. This will create a bunch of files that have gene calls for each gene. For example, the nifH file will have gene calls IDs for genes that were identified as nifH by COGs, TIGRFAM HMMs, FOAM HMMs and GhoastKOALA. 
