@@ -1,6 +1,5 @@
-This is the output of `python ../run_all_works2.py -i ./ -g "nifH|nifK|nifD|COG2710" -t family`
+This is the output of python ../run_all_works2.py -i ./ -g "nifH|nifK|nifD|COG2710" -t family
 
-```
 The family that have nifH|nifK|nifD|COG2710 based on custom nif Hmms:
 
 Lachnospiraceae        47
@@ -75,4 +74,3 @@ The family that have nifH|nifK|nifD|COG2710 common to all 4 methods:
 23                             Peptococcaceae       5
 35                        Methanomicrobiaceae       1
 
-```
