@@ -74,3 +74,4 @@ This assigned the sequences to the following clusters/subclusters:
 >1299485 | Unknown_Methanobrevibacter main cluster = 4 subcluster = 4B
 >1401422 | Unknown_Methanobrevibacter main cluster = 4 subcluster = 4B
 ```
+## For the nifH genes found in a contig with no other nif genes
