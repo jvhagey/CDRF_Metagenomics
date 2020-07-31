@@ -17,7 +17,7 @@ for f in /share/tearlab/Maga/Jill/CDRF_MetaGenome/Kaiju_2019/*_kaiju-names_out.t
 do
 	fname=$(basename $f _kaiju-names_out.tsv)
 	#grep to find families of interest in each of the kaiju folders
-	time grep -f Families_of_interest.txt *_kaiju-names_out.tsv >> ${fname}_kaiju-names_out_subset.tsv
+	time grep -f Families_of_interest.txt ${fname}_kaiju-names_out.tsv >> ${fname}_kaiju-names_out_subset.tsv
 done
 ```
 Note: that in the script above `Families_of_interest.txt` is a file with the name on a family on each line. 
