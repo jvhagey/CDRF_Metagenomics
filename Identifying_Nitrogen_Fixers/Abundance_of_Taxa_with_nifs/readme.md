@@ -1,4 +1,4 @@
-## For the nifH genes found in a contig with no other nif genes
+## For the nifH genes found in the same contig with nifD and nifK
 
 ### Identifying Taxa with nifHDK in the same contig
 Run `python run_all_works2.py -i ./ -g "nifH|nifK|nifD|COG2710" -t family`. The output of this is found in the file `Families_with_Nif_Genes.txt`. For now we will look just for taxa with nifH `python run_all_works2.py -i ./ -g "nifH" -t family -o some_name_you_pick.txt` and you can swap family out for other levels. The output of this is found in `Taxa_with_nifH.txt`. Now we will move on to getting the gene calls for nifH and placing them on a tree. See the nifH_Tree folder. 
