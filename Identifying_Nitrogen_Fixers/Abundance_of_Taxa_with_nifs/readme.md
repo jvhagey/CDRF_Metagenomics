@@ -17,9 +17,12 @@ for f in /share/tearlab/Maga/Jill/CDRF_MetaGenome/Kaiju_2019/*_kaiju-names_out.t
 do
 	fname=$(basename $f _kaiju-names_out.tsv)
 	#grep to find families of interest in each of the kaiju folders
-	time grep -f Families_of_interest.txt ${fname}_kaiju-names_out.tsv >> ${fname}_kaiju-names_out_subset.tsv
+	time grep -f Families_of_interest.txt ${fname}_kaiju-names_out.tsv >> ${fname}_kaiju-names_out_subset_notclean.tsv
+	time sed 's/[][]//g' ${fname}_kaiju-names_out_subset_notclean.tsv >> ${fname}_kaiju-names_out_subset.tsv #brackets will mess up the python script
+	time rm ${fname}_kaiju-names_out_subset_notclean.tsv
 done
 ```
+
 Note: that in the script above `Families_of_interest.txt` is a file with the name on a family on each line. 
 Script `Kaiju_to_otutab.py` was written to parse the output of `kaiju-addTaxonNames` into a tax_tab.txt and otu_tab.txt that can be read into R to create a phyloseq object. For some reason I haven't sorted out yet it isn't running at as an executable, but will run by line. Shoot me an email if you want some explaination or it fixed for your own purposes.
 
