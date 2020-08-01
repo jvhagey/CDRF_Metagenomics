@@ -22,6 +22,7 @@ do
 	time rm ${fname}_kaiju-names_out_subset_notclean.tsv
 done
 ```
+If there is an error you can use `sed 'NUMq;d' file` to get the line of the error.
 
 Note: that in the script above `Families_of_interest.txt` is a file with the name on a family on each line. 
 Script `Kaiju_to_otutab.py` was written to parse the output of `kaiju-addTaxonNames` into a tax_tab.txt and otu_tab.txt that can be read into R to create a phyloseq object. For some reason I haven't sorted out yet it isn't running at as an executable, but will run by line. Shoot me an email if you want some explaination or it fixed for your own purposes.
