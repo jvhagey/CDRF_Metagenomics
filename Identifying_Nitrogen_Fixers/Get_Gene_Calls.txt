@@ -1,0 +1,39 @@
+#getting gene calls for each nif gene
+python Anvi_table_parser_new3.py -i ./ -t family -g "nifD" -s "KeggGhostKoala" -gc -o NifD_GK_GeneCalls.csv
+python Anvi_table_parser_new3.py -i ./ -t family -g "nifK" -s "KeggGhostKoala" -gc -o NifK_GK_GeneCalls.csv
+python Anvi_table_parser_new3.py -i ./ -t family -g "nifH" -s "KeggGhostKoala" -gc -o NifH_GK_GeneCalls.csv
+
+python Anvi_table_parser_new3.py -i ./ -t family -g "nifD" -s "Nif_Hmms" -gc -o NifD_NifHMMs_GeneCalls.csv
+python Anvi_table_parser_new3.py -i ./ -t family -g "nifK" -s "Nif_Hmms" -gc -o NifK_NifHMMs_GeneCalls.csv
+python Anvi_table_parser_new3.py -i ./ -t family -g "nifH" -s "Nif_Hmms" -gc -o NifH_NifHMMs_GeneCalls.csv
+
+python Anvi_table_parser_new3.py -i ./ -t family -g "COG1348" -gc  -s "COG" -o nifH_COG_GeneCalls.csv
+python Anvi_table_parser_new3.py -i ./ -t family -g "COG2710" -gc  -s "COG" -o nifKD_COG_GeneCalls.csv
+
+python Anvi_table_parser_new3.py -i ./ -t family -g "nifH" -gc -s "Foam_Nitro" -o nifH_FoamHmms_GeneCalls.csv
+python Anvi_table_parser_new3.py -i ./ -t family -g "nifK" -gc -s "Foam_Nitro" -o nifK_FoamHmms_GeneCalls.csv
+python Anvi_table_parser_new3.py -i ./ -t family -g "nifD" -gc -s "Foam_Nitro" -o nifD_FoamHmms_GeneCalls.csv
+
+#counting the number of gene calls in common
+comm -12 <(sort NifH_NifHMMs_GeneCalls.csv) <(sort nifH_FoamHmms_GeneCalls.csv) | wc -l
+comm -12 <(sort NifD_NifHMMs_GeneCalls.csv) <(sort nifD_FoamHmms_GeneCalls.csv) | wc -l
+comm -12 <(sort NifK_NifHMMs_GeneCalls.csv) <(sort nifK_FoamHmms_GeneCalls.csv)| wc -l
+
+comm -12 <(sort NifH_NifHMMs_GeneCalls.csv) <(sort NifH_GK_GeneCalls.csv) | wc -l
+comm -12 <(sort NifD_NifHMMs_GeneCalls.csv) <(sort NifD_GK_GeneCalls.csv) | wc -l
+comm -12 <(sort NifK_NifHMMs_GeneCalls.csv) <(sort NifK_GK_GeneCalls.csv) | wc -l
+
+comm -12 <(sort nifH_FoamHmms_GeneCalls.csv) <(sort NifH_GK_GeneCalls.csv) | wc -l
+comm -12 <(sort nifD_FoamHmms_GeneCalls.csv) <(sort NifD_GK_GeneCalls.csv) | wc -l
+comm -12 <(sort nifK_FoamHmms_GeneCalls.csv) <(sort NifK_GK_GeneCalls.csv) | wc -l
+
+comm -12 <(sort NifH_NifHMMs_GeneCalls.csv) <(sort nifH_FoamHmms_GeneCalls.csv) >> nifH_FoamNifHmms_GeneCalls.csv
+comm -12 <(sort NifD_NifHMMs_GeneCalls.csv) <(sort nifD_FoamHmms_GeneCalls.csv) >> nifD_FoamNifHmms_GeneCalls.csv
+comm -12 <(sort NifK_NifHMMs_GeneCalls.csv) <(sort nifK_FoamHmms_GeneCalls.csv) >> nifK_FoamNifHmms_GeneCalls.csv
+
+comm -12 <(sort nifH_FoamNifHmms_GeneCalls.csv) <(sort NifH_GK_GeneCalls.csv) | wc -l
+comm -12 <(sort nifD_FoamNifHmms_GeneCalls.csv) <(sort NifD_GK_GeneCalls.csv) | wc -l
+comm -12 <(sort nifK_FoamNifHmms_GeneCalls.csv) <(sort NifK_GK_GeneCalls.csv) | wc -l
+
+comm -12 <(sort nifH_COG_GeneCalls.csv) <(sort NifH_GK_GeneCalls.csv) >> nifH_COG_GK_GeneCalls.csv
+comm -12 <(sort nifH_FoamNifHmms_GeneCalls.csv) <(sort nifH_COG_GK_GeneCalls.csv) | wc -l
