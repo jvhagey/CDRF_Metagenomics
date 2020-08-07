@@ -171,4 +171,5 @@ Once accession numbers had been identified the full genome were downloaded.
 [Prevotella bryantii](https://www.ncbi.nlm.nih.gov/nuccore/NPJF00000000) Accession #NPJF00000000 BioProject #PRJNA396820 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/CYZX01?val=NPJF01)  
 [Lachnobacterium bovis](https://www.ncbi.nlm.nih.gov/bioproject/PRJEB16629) Accession #FNPG00000000 BioProject #PRJEB16629 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/CYZX01?val=FNPG01)  
 [Lachnobacterium bacterium](https://www.ncbi.nlm.nih.gov/bioproject/PRJEB19693) Accession #FUZG00000000 BioProject #PRJEB19693 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/CYZX01?val=FUZG01)  
-[Olsenella umbonata](https://www.ncbi.nlm.nih.gov/bioproject/PRJEB15778) Accession #FNWT00000000 BioProject #PRJEB15778 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/CYZX01?val=FNWT01)  
+[Olsenella umbonata](https://www.ncbi.nlm.nih.gov/bioproject/PRJEB15778) Accession #FNWT00000000 BioProject #PRJEB15778 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/CYZX01?val=FNWT01)   
+[Lachnospiraceae bacterium XPB1003](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA224116) Accession #FMVK00000000 BioProject #PRJNA224116 [Sequence](https://www.ncbi.nlm.nih.gov/Traces/wgs/FMVK01?display=contigs)  
