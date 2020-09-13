@@ -1,4 +1,7 @@
 # CDRF_Metagenomics
+
+[![DOI](https://zenodo.org/badge/126870655.svg)](https://zenodo.org/badge/latestdoi/126870655)
+
 Scripts used for processing of metagenomic data on CDRF project
 1. Functional_Annotation --> FOAM_Hmms, ghostKOALA, HMMER and Prokka
 2. Identifying_Nitrogen_Fixers --> Custom python scripts to extract information out of tables from database.
